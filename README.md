@@ -1,46 +1,46 @@
-# Getting Started with Create React Index
+# Important 🤫
 
-This project was bootstrapped with [Create React Index](https://github.com/facebook/create-react-app).
+This is web messenger build on typescript,scss
+and own Template Engine which build on Regexp and typescript classes.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+On start clone repository and install all dependencies
 
-### `npm start`
+```bash
+git clone https://github.com/Filimonsha/cubegramm.git
+npm i
+```
+So if you want to run dev application just write
+```bash
+npm run dev
+//Or buid project
+npm run build
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Usage template engine 😇
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+For creating template you can just create instance of Template class
 
-### `npm test`
+```js
+    export const defaultBtnTemplate = new Template(`
+    <button class="btn">
+       <span class="btn_text">
+         {{!text!}}
+        </span>
+     </button>
+    `)
+```
+If you want to dynamical render constructions use " { { } } "
+There you can render variables, condition :
+```js
+export const messageTemplate = new Template(`
+        <div class="message {{ if ( !user! ==="home") then {message__my} }} ">
+            {{ !messageText! }}
+        </div>
+`)
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React Index documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+![img.png](img.png)

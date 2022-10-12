@@ -1,0 +1,40 @@
+*{
+  box-sizing: border-box;
+}
+.input__with-label{
+  display: flex;
+  flex-direction: column;
+  &_label{
+    margin-bottom: 7px;
+  }
+  &_input{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #000000;
+    border-radius: 4px;
+  }
+}
+.base-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #999999;
+  border-radius: 3px;
+  padding: 10px 15px;
+  &_key{
+      border-right: 1px solid #999999;
+    padding-right: 45px;
+  }
+  &_value{
+    padding-left: 45px;
+  }
+}
+
+.btn{
+  border:none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}

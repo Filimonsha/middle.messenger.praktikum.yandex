@@ -1,0 +1,1 @@
+export {mainBtnTemplate as MainBtn} from "./mainBtn.tmpl"

@@ -1,0 +1,1 @@
+export {mainTemplate as Main} from "./main.tmpl"

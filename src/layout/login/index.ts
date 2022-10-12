@@ -1,0 +1,1 @@
+export {loginLayoutTemplate as LoginLayout} from "./login.tmpl"

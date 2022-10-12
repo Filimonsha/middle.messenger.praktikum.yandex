@@ -1,0 +1,1 @@
+export {registrationLayoutTemplate as RegistrationLayout} from "./registration.tmpl"

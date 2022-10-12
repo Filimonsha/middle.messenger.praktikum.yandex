@@ -1,0 +1,276 @@
+.sidebar {
+  max-width: 30%;
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
+}
+
+.sidebar_chats {
+  display: flex;
+}
+
+.chat-item {
+  border: 2px solid #000;
+  border-width: 2px 0;
+  border-radius: 3px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.chat-item_desc {
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.chat-item_img {
+  width: 104px;
+  height: 104px;
+  border-radius: 50px;
+  margin-right: 25px;
+}
+
+.chat-item_msg {
+  flex-direction: column;
+  margin-right: 25px;
+  display: flex;
+}
+
+.chat-item_time {
+  border-bottom: 1px solid #000;
+  padding: 0 0 3px;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 11px;
+}
+
+.chat-item_notification {
+  filter: drop-shadow(2.25px 2.25px 2.25px #00000040);
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+
+.chat-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.chat-item_info {
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
+}
+
+.chat {
+  display: flex;
+}
+
+.header {
+  background: #989898;
+  justify-content: space-between;
+  padding: 20px;
+  display: flex;
+}
+
+.header_user {
+  align-items: center;
+  display: flex;
+}
+
+.header_avatar {
+  margin-right: 30px;
+}
+
+.main {
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
+  overflow-y: scroll;
+}
+
+.messages {
+  flex-direction: column;
+  display: flex;
+}
+
+.message {
+  max-width: 500px;
+  border: 1px solid #c8c8c8;
+  border-width: 1px 0;
+  border-radius: 3px;
+  flex-direction: column;
+  padding: 20px 50px;
+  display: flex;
+  overflow: hidden;
+}
+
+.message_check {
+  display: none;
+}
+
+.message_info {
+  align-items: center;
+  display: flex;
+}
+
+.message_time {
+  border-bottom: 1.60151px solid #7d7c7c;
+  margin-bottom: 10px;
+}
+
+.message__my {
+  background: #f7f9ff;
+  flex-direction: column-reverse;
+  align-self: end;
+}
+
+.message__my .message_check {
+  display: block;
+}
+
+.message__my .message_time {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.control-panel_form {
+  justify-content: space-between;
+  display: flex;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.input__with-label {
+  flex-direction: column;
+  display: flex;
+}
+
+.input__with-label_label {
+  margin-bottom: 7px;
+}
+
+.input__with-label_input {
+  border: none;
+  border-bottom: 1px solid #000;
+  border-radius: 4px;
+  outline: none;
+}
+
+.base-info {
+  border: 1px solid #999;
+  border-width: 1px 0;
+  border-radius: 3px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 15px;
+  display: flex;
+}
+
+.base-info_key {
+  border-right: 1px solid #999;
+  padding-right: 45px;
+}
+
+.base-info_value {
+  padding-left: 45px;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.btn_text {
+  border: 2px solid #767575;
+  border-width: 2px 0;
+  padding: 8px 0;
+  display: inline-block;
+}
+
+.btn__main {
+  border: 2px solid #000;
+  border-radius: 6px;
+  padding: 18px 27px;
+}
+
+.login {
+  height: 100vh;
+  position: relative;
+}
+
+.login_container {
+  width: 25%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login_buttons {
+  flex-direction: column;
+  display: flex;
+}
+
+.login_btn__main {
+  margin-bottom: 22px;
+}
+
+.registration {
+  height: 100vh;
+  position: relative;
+}
+
+.registration_container {
+  width: 25%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.registration_buttons {
+  flex-direction: column;
+  display: flex;
+}
+
+.user-profile {
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.user-profile_logo {
+  margin-bottom: 15px;
+}
+
+.user-profile_name {
+  margin-bottom: 10px;
+}
+
+.user-profile_change-info {
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+}
+
+.user-profile .base-info:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+
+
+/*# sourceMappingURL=index.37c05dbc.css.map */

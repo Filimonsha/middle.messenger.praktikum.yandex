@@ -1,3 +1,4 @@
+@import "./src/global/_variables";
 .header{
   display: flex;
   justify-content: space-between;
@@ -8,6 +9,6 @@
   &_avatar{
     margin-right: 30px;
   }
-  background: #989898;
+  background:$main-color ;
   padding: 20px;
 }

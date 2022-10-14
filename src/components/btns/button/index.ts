@@ -1,0 +1,1 @@
+export {btnTemplate as Button} from "./button.tmpl"

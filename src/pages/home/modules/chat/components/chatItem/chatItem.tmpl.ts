@@ -13,9 +13,9 @@ export const chatItemTemplate = new Template(
             </div>
         </div>
         <div class="chat-item_info">
-            <div class="chat-item_time">
+            <time datetime={{!lastMsgTime!}} class="chat-item_time">
                 {{ !lastMsgTime! }}
-            </div>
+            </time>
             <div class="chat-item_notification">
                 {{ !countOfNotification! }}
             </div>

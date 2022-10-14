@@ -1,8 +1,6 @@
 import {Input} from "../../components/input";
-import {MainBtn} from "../../components/btns/mainBtn";
-import {DefaultBtn} from "../../components/btns/defaultBtn";
+import {Button} from "../../components/btns/button";
 import "./login.scss"
-import {LOGIN} from "../../const/DOMElements";
 import {Template} from "../../utils/templateEngine/template";
 const loginData = {
     logins: [
@@ -15,6 +13,7 @@ const loginData = {
         },
     ],
     defaultBtn:{
+        btnType:"btn__main login_btn__main",
         text:"Еще нет аккаунта ?"
     },mainBtn:{
         text:"Войти"
@@ -32,8 +31,8 @@ export const loginLayoutTemplate = new Template(`
               
             </form>
             <div class="login_buttons">
-                ${MainBtn.compile(loginData.mainBtn)}
-                ${DefaultBtn.compile(loginData.defaultBtn)}
+                ${Button.compile(loginData.mainBtn)}
+                ${Button.compile(loginData.defaultBtn)}
             </div>
         </div>
 

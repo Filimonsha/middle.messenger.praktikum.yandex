@@ -1,1 +1,0 @@
-export {defaultBtnTemplate as DefaultBtn} from "./defaultBtn.tmpl"

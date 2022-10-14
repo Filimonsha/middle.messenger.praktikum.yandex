@@ -10,7 +10,6 @@ export class Template {
     }
 
     compile(context?: object) {
-        // this.modifyTemplate = template
         const result = this.foundDynamicRegexp(context)
         this.modifyTemplate = this.initialTemplate
         return result
@@ -46,7 +45,7 @@ export class Template {
     private replaceAllDynamicRegExp(){
         let nextFoundMatchArray: RegExpExecArray = null
         while (nextFoundMatchArray = TEMPLATE_DYNAMIC_REGEXP.exec(this.initialTemplate)) {
-            const foundedDynamicReg = nextFoundMatchArray[1].split(" ").join("")
+            const foundedDynamicReg = nextFoundMatchArray[1].trim()
             const foundedMatch = nextFoundMatchArray[0]
             this.modifyTemplate = this.modifyTemplate.replace(
                 new RegExp(foundedMatch, "gi"),
@@ -77,15 +76,8 @@ export class Template {
         }
     }
 
-    static insertTemplateInDom(template: string, parent: HTMLElement) {
-        parent.innerHTML = template
-    }
-
-
     private renderCondition(foundedDynamicReg:string,foundedMatch:string) {
         const foundedConditionArgs = TEMPLATE_IF_THEN_REGEXP.exec(foundedDynamicReg)
-        console.log(foundedMatch,foundedConditionArgs)
-
         const condition = eval(foundedConditionArgs[1])
         const ifSuccessThen = foundedConditionArgs[2]
 

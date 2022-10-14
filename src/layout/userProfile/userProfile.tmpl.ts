@@ -1,7 +1,7 @@
 import "./userProfile.scss"
 import {Template} from "../../utils/templateEngine/template";
 import {BaseInfo} from "../../components/baseInfo";
-import {DefaultBtn} from "../../components/btns/defaultBtn";
+import {Button} from "../../components/btns/button";
 
 const userData = {
     userName: "Alex Golanov",
@@ -18,6 +18,7 @@ const userData = {
         },
     ],
     btns:[{
+
         text:"Изменить данные",
     },{
         text:"Изменить пароль",
@@ -37,7 +38,7 @@ export const userProfileLayoutTemplate = new Template(
                ${ userData.userInfo.map(info => BaseInfo.compile(info)).join("")  }
         </div>
         <div class="user-profile_change-info">
-            ${userData.btns.map(btn => DefaultBtn.compile(btn)) }
+            ${userData.btns.map(btn => Button.compile(btn)) }
         </div>
     </div>
     `

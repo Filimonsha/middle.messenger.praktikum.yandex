@@ -1,9 +1,9 @@
 import {Template} from "../../../utils/templateEngine/template";
 import "../btns.scss"
-export const mainBtnTemplate = new Template (`
-<button class="btn btn__main login_btn__main">
+export const btnTemplate = new Template (`
+<button class="btn {{!btnType!}} ">
     <span class="btn_text">
-        {{text}}
+        {{!text!}}
     </span>
 </button>
 `)

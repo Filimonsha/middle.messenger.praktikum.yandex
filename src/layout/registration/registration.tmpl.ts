@@ -1,7 +1,6 @@
 import {Input} from "../../components/input";
 import "./registration.scss"
-import {MainBtn} from "../../components/btns/mainBtn";
-import {DefaultBtn} from "../../components/btns/defaultBtn";
+import {Button} from "../../components/btns/button";
 import {Template} from "../../utils/templateEngine/template";
 
 const registrationData = {
@@ -37,6 +36,7 @@ const registrationData = {
         },
     ],
     mainBtn:{
+        btnType:"btn__main login_btn__main",
         text:"Зарегистрироваться"
     },
     defaultBtn:{
@@ -53,8 +53,8 @@ export const registrationLayoutTemplate = new Template( `
                 ${registrationData.inputs.map(input=>Input.compile(input))}
             </form> 
              <div class="registration_buttons">
-                ${MainBtn.compile(registrationData.mainBtn)}
-                ${DefaultBtn.compile(registrationData.defaultBtn)}
+                ${Button.compile(registrationData.mainBtn)}
+                ${Button.compile(registrationData.defaultBtn)}
             </div>
             </div>
              

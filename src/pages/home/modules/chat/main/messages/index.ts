@@ -1,0 +1,1 @@
+export {messagesTemplate as Messages} from "./messages.tmpl"

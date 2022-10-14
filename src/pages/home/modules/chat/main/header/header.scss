@@ -1,0 +1,14 @@
+@import "./src/global/_variables";
+.header{
+  display: flex;
+  justify-content: space-between;
+  &_user{
+    display: flex;
+    align-items: center;
+  }
+  &_avatar{
+    margin-right: 30px;
+  }
+  background:$main-color ;
+  padding: 20px;
+}

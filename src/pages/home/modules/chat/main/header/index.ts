@@ -1,0 +1,1 @@
+export {headerTemplate as Header} from "./header.tmpl"

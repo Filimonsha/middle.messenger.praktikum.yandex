@@ -1,0 +1,1 @@
+export {inputTemplate as Input} from './input.tmpl'

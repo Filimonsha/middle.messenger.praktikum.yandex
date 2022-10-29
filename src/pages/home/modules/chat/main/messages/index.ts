@@ -1,1 +1,1 @@
-export {messagesTemplate as Messages} from "./messages.tmpl"
+export { MessagesComponent } from './Messages';

@@ -1,1 +1,1 @@
-export {baseInfoTemplate as BaseInfo} from "./baseInfo.tmpl"
+export { baseInfoTemplate as BaseInfo } from './baseInfo.tmpl';

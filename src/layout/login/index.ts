@@ -1,1 +1,1 @@
-export {loginLayoutTemplate as LoginLayout} from "./login.tmpl"
+export { LoginLayoutComponent } from "./Login";

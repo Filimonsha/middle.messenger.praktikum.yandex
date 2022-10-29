@@ -1,1 +1,1 @@
-export {userProfileLayoutTemplate  as UserProfileLayout} from "./userProfile.tmpl"
+export { userProfileLayoutTemplate as UserProfileLayout } from './userProfile.tmpl';

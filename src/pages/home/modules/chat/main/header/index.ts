@@ -1,1 +1,1 @@
-export {headerTemplate as Header} from "./header.tmpl"
+export { HeaderComponent } from './Header';

@@ -1,1 +1,1 @@
-export {registrationLayoutTemplate as RegistrationLayout} from "./registration.tmpl"
+export { RegistrationLayoutComponent } from "./Registration";

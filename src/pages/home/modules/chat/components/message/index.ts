@@ -1,1 +1,1 @@
-export {messageTemplate as Message} from "./message.tmpl"
+export { Message } from './Message';

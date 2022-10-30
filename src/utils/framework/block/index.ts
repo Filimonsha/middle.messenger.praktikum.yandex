@@ -2,10 +2,6 @@ import { v4 as makeUUID } from "uuid";
 import { EventBus } from "../eventBus";
 import { Events } from "./const/events";
 import { Template } from "../templateEngine/template";
-import { CHAT } from "../../../const/DOMElements";
-import { AttributeHandler } from "../attributeHandler";
-import { isEmpty } from "../../myDash/isEmpty";
-
 type Props = {
   state: object;
   events?: object;
@@ -26,7 +22,8 @@ export abstract class Block {
 
   private readonly componentSimpleState: object;
 
-  private readonly componentId = `component-${makeUUID()}`;
+  // private readonly componentId = `component-${makeUUID()}`;
+  private readonly componentId = `component-${Math.random()*1000}`;
 
   // private
   protected constructor(template: Template, props: Props) {

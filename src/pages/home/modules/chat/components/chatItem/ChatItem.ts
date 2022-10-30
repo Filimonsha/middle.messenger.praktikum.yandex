@@ -1,8 +1,8 @@
-import { Block } from '../../../../../../utils/framework/block';
-import { chatItemTemplate } from './chatItem.tmpl';
+import { Block } from "../../../../../../utils/framework/block";
+import { chatItemTemplate } from "./chatItem.tmpl";
 
 export class ChatItem extends Block {
   constructor(props) {
-    super('div', chatItemTemplate, props);
+    super(chatItemTemplate, props);
   }
 }

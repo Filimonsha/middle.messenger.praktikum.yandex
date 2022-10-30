@@ -7,7 +7,7 @@ import { DefaultBtn } from "../../components/btns/defaultBtn";
 
 class LoginLayout extends Block {
   constructor(props) {
-    super("div", loginLayoutTemplate, props);
+    super(loginLayoutTemplate, props);
   }
 }
 

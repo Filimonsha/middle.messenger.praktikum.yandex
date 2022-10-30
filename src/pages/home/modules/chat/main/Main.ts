@@ -13,7 +13,7 @@ const mainProps = {
 };
 class Main extends Block {
   constructor(props) {
-    super("div", mainTemplate, props);
+    super(mainTemplate, props);
   }
 }
 export const MainComponent = new Main(mainProps);

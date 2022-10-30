@@ -11,7 +11,7 @@ const chatLayoutProps = {
 };
 class ChatLayout extends Block {
   constructor(props) {
-    super("div", chatLayoutTemplate, props);
+    super(chatLayoutTemplate, props);
   }
 }
 export const ChatLayoutComponent = new ChatLayout(chatLayoutProps);

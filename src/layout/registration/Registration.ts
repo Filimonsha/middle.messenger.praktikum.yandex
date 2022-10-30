@@ -137,7 +137,7 @@ const defaultBtnData = {
 
 class RegistrationLayout extends Block {
   constructor(props) {
-    super("div", registrationLayoutTemplate, props);
+    super(registrationLayoutTemplate, props);
   }
 }
 

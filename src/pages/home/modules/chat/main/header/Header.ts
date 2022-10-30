@@ -1,13 +1,13 @@
-import { Block } from '../../../../../../utils/framework/block';
-import { headerTemplate } from './header.tmpl';
+import { Block } from "../../../../../../utils/framework/block";
+import { headerTemplate } from "./header.tmpl";
 
 class Header extends Block {
   constructor(props) {
-    super('div', headerTemplate, props);
+    super(headerTemplate, props);
   }
 }
 export const HeaderComponent = new Header({
   state: {
-    userName: 'Oleg',
+    userName: "Oleg",
   },
 });

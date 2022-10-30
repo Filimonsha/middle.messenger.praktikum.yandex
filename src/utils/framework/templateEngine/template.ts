@@ -1,9 +1,12 @@
-import { TEMPLATE_DYNAMIC_REGEXP, TEMPLATE_IF_THEN_REGEXP, TEMPLATE_VARIABLES_REGEXP } from '../const/regExp';
+import {
+  TEMPLATE_DYNAMIC_REGEXP,
+  TEMPLATE_IF_THEN_REGEXP,
+  TEMPLATE_VARIABLES_REGEXP,
+} from "../const/regExp";
+import { FoundRegexpHandler, RegexpHandler } from "../regexpHandler";
 
 export class Template {
   private readonly initialTemplate: string;
-
-  private context: object;
 
   private modifyTemplate: string;
 
@@ -19,7 +22,7 @@ export class Template {
   }
 
   private getProperty(object, propertyName: string) {
-    const keys = propertyName.split('.');
+    const keys = propertyName.split(".");
 
     let propertyOfObject;
     let currentObject = object;
@@ -33,68 +36,85 @@ export class Template {
   }
 
   private foundDynamicRegexp(context: object) {
-    let nextFoundMatchArray: RegExpExecArray = null;
     this.renderSimpleVariables(context);
-    while (nextFoundMatchArray = TEMPLATE_DYNAMIC_REGEXP.exec(this.modifyTemplate)) {
-      const foundedDynamicReg = nextFoundMatchArray[1].split(' ').join('');
-      const foundedMatch = nextFoundMatchArray[0];
+    const conditionRegexpHandler: FoundRegexpHandler = (
+      foundedDynamicReg,
+      foundedMatch
+    ) => {
       if (foundedDynamicReg.match(TEMPLATE_IF_THEN_REGEXP)) {
         this.renderCondition(foundedDynamicReg, foundedMatch);
       }
-    }
-
+    };
+    RegexpHandler.handAllFoundRegexp(
+      TEMPLATE_DYNAMIC_REGEXP,
+      this.modifyTemplate,
+      conditionRegexpHandler
+    );
     this.replaceAllDynamicRegExp();
     return this.modifyTemplate;
   }
 
   private replaceAllDynamicRegExp() {
-    let nextFoundMatchArray: RegExpExecArray = null;
-    while (nextFoundMatchArray = TEMPLATE_DYNAMIC_REGEXP.exec(this.modifyTemplate)) {
-      // const foundedDynamicReg = nextFoundMatchArray[1].split(" ").join("")
-      const foundedDynamicReg = nextFoundMatchArray[1];
-      const foundedMatch = nextFoundMatchArray[0];
-      this.modifyTemplate = this.modifyTemplate.replace(
-        // new RegExp(foundedMatch, "gi"),
+    const dynamicRegexpHandler: FoundRegexpHandler = (
+      foundedDynamicReg,
+      foundedMatch
+    ) =>
+      (this.modifyTemplate = this.modifyTemplate.replace(
         foundedMatch,
-        foundedDynamicReg,
-      );
-    }
+        foundedDynamicReg
+      ));
+
+    RegexpHandler.handAllFoundRegexp(
+      TEMPLATE_DYNAMIC_REGEXP,
+      this.modifyTemplate,
+      dynamicRegexpHandler,
+      false
+    );
   }
 
   private renderSimpleVariables(context: object) {
-    let nextFoundMatchArray: RegExpExecArray = null;
-    while (nextFoundMatchArray = TEMPLATE_VARIABLES_REGEXP.exec(this.initialTemplate)) {
-      const foundedNameOfProperty = nextFoundMatchArray[1].trim();
-      const foundedMatch = nextFoundMatchArray[0];
-      const property = this.getProperty(context, foundedNameOfProperty);
-      if (foundedNameOfProperty) {
+    const simpleVariablesRegexpHandler: FoundRegexpHandler = (
+      foundedDynamicReg,
+      foundedMatch
+    ) => {
+      const property = this.getProperty(context, foundedDynamicReg);
+      if (foundedDynamicReg) {
+        const propertyElementIsComponent =
+          Array.isArray(property) &&
+          property.every((propertyElement) => {
+            const elementIsString = typeof propertyElement === "string";
+            return (
+              elementIsString &&
+              propertyElement.trim().startsWith("<div id=component-")
+            );
+          });
+
         this.modifyTemplate = this.modifyTemplate.replace(
-          new RegExp(foundedMatch, 'gi'),
-          property,
+          new RegExp(foundedMatch, "gi"),
+          propertyElementIsComponent ? property.join("") : property
         );
       }
-    }
-  }
+    };
 
-  static insertTemplateInDom(template: string, parent: HTMLElement) {
-    parent.innerHTML = template;
+    RegexpHandler.handAllFoundRegexp(
+      TEMPLATE_VARIABLES_REGEXP,
+      this.modifyTemplate,
+      simpleVariablesRegexpHandler
+    );
   }
-
   private renderCondition(foundedDynamicReg: string, foundedMatch: string) {
-    const foundedConditionArgs = TEMPLATE_IF_THEN_REGEXP.exec(foundedDynamicReg);
+    const foundedConditionArgs =
+      TEMPLATE_IF_THEN_REGEXP.exec(foundedDynamicReg);
     const condition = eval(foundedConditionArgs[1]);
     const ifSuccessThen = foundedConditionArgs[2];
-
+    const ifFalseThen = foundedConditionArgs[3];
     if (condition) {
       this.modifyTemplate = this.modifyTemplate.replace(
         foundedMatch,
-        ifSuccessThen,
+        ifSuccessThen
       );
-    } else {
-      this.modifyTemplate = this.modifyTemplate.replace(
-        foundedMatch,
-        '',
-      );
+    } else if (ifFalseThen) {
+      this.modifyTemplate = this.modifyTemplate.replace(foundedMatch, "");
     }
   }
 }

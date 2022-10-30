@@ -3,7 +3,7 @@ import { controlPanelTemplate } from "./controlPanel.tmpl";
 
 export class ControlPanel extends Block {
   constructor(props) {
-    super("div", controlPanelTemplate, props);
+    super(controlPanelTemplate, props);
   }
 }
 export const ControlPanelComponent = new ControlPanel({

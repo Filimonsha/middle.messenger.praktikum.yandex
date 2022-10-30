@@ -31,7 +31,7 @@ const MessagesProps = {
 
 class Messages extends Block {
   constructor(props) {
-    super("div", messagesTemplate, props);
+    super(messagesTemplate, props);
   }
 }
 export const MessagesComponent = new Messages(MessagesProps);

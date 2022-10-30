@@ -14,15 +14,13 @@ type Props = {
 export abstract class Block {
   private eventBus = new EventBus();
 
-  private readonly metaDate;
-
   private element: HTMLElement;
 
   private readonly template: Template;
 
-  private componentState;
+  private readonly componentProps: Props;
 
-  private readonly componentEvents: object | null;
+  private componentState;
 
   private readonly componentChildren: object | null;
 
@@ -31,13 +29,12 @@ export abstract class Block {
   private readonly componentId = `component-${makeUUID()}`;
 
   // private
-  protected constructor(tagName = "div", template: Template, props: Props) {
+  protected constructor(template: Template, props: Props) {
     this.template = template;
-    this.componentEvents = props.events;
+    this.componentProps = props;
     const { children, simpleState } = this.findChildrenAndState(props.state);
     this.componentChildren = children;
     this.componentSimpleState = simpleState;
-    this.metaDate = { tagName, props };
     if (children) {
       this.createDummyChildren();
     }
@@ -64,7 +61,6 @@ export abstract class Block {
 
   // State Proxy
   private makeStateProxy = () => {
-    console.log("VA", this.metaDate.props);
     const handlers: ProxyHandler<any> = {
       set: (target, p, value) => {
         target[p] = value;
@@ -72,17 +68,16 @@ export abstract class Block {
         return true;
       },
     };
-    this.componentState = new Proxy(this.metaDate.props.state, handlers);
+    this.componentState = new Proxy(this.componentProps.state, handlers);
   };
 
   // Events
   private init = () => {
-    const createElement = () => {
-      const { tagName } = this.metaDate;
-      this.element = document.createElement(tagName);
+    const createDummyElement = () => {
+      this.element = document.createElement("div");
     };
 
-    createElement();
+    createDummyElement();
     this.eventBus.notify(Events.COMPONENT_RENDER);
   };
 
@@ -96,26 +91,27 @@ export abstract class Block {
   }
 
   private render = () => {
-    if (this.element && this.componentEvents) {
-      Object.keys(this.componentEvents).forEach((eventName) => {
+    if (this.element && this.componentProps.events) {
+      Object.keys(this.componentProps.events).forEach((eventName) => {
         this.element.removeEventListener(
           eventName,
-          this.componentEvents[eventName]
+          this.componentProps.events[eventName]
         );
       });
     }
-    // console.log("state in render phase",this.template)
     this.element.innerHTML = this.template.compile(this.componentState);
+    this.element = this.element.children[0];
+    console.log(this.element.children);
     // AttributeHandler.handEventsAttributes(this.element)
     if (this.componentChildren) {
       this.renderChildren();
     }
 
-    if (this.componentEvents) {
-      Object.keys(this.componentEvents).forEach((eventName) => {
+    if (this.componentProps.events) {
+      Object.keys(this.componentProps.events).forEach((eventName) => {
         this.element.addEventListener(
           eventName,
-          this.componentEvents[eventName].bind(this)
+          this.componentProps.events[eventName].bind(this)
         );
       });
     }
@@ -136,7 +132,6 @@ export abstract class Block {
           });
         }
       } else if (value instanceof Block) {
-        console.log(value);
         children[key] = value;
       } else {
         simpleState[key] = value;
@@ -147,42 +142,34 @@ export abstract class Block {
 
   private createDummyChildren() {
     const createDummyChild = (childrenValue: Block, childrenName: string) => {};
-    console.log(this.componentChildren, "Ehf");
     Object.entries(this.componentChildren).forEach((children) => {
       const childrenName = children[0];
       const childrenValue: Block | Array<Block> = children[1];
       if (Array.isArray(childrenValue)) {
         childrenValue.forEach((child, index) => {
-          console.log(index, "JJJJJJ");
           const childrenDummy = `
                 <div id=${child.componentId}></div>
             `;
-          this.metaDate.props.state[childrenName][index] = childrenDummy;
-          console.log(
-            "Hui",
-            child,
-            this.metaDate.props.state[childrenName][index]
-          );
+          this.componentProps.state[childrenName][index] = childrenDummy;
         });
       } else {
         const childrenDummy = `
                 <div id=${childrenValue.componentId}></div>
             `;
-        this.metaDate.props.state[childrenName] = childrenDummy;
+        this.componentProps.state[childrenName] = childrenDummy;
       }
     });
-    console.log(this.metaDate.props.state);
   }
 
   private renderChildren() {
     const renderOneChild = (child: Block) => {
-      console.log(child, "hah");
       const childrenId = `#${child.componentId.toString()}`;
       const foundChildrenDummy = this.element.querySelector(childrenId);
       if (foundChildrenDummy) {
-        foundChildrenDummy.replaceChildren(child.getCompiledElement());
+        console.error(foundChildrenDummy);
+        foundChildrenDummy.replaceWith(child.getCompiledElement());
       } else {
-        console.log("In template didnt find children layout!");
+        throw new Error("In template didnt find children layout!");
       }
     };
     Object.values(this.componentChildren).forEach((children) => {

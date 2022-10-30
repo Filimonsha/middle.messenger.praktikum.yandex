@@ -23,10 +23,12 @@ export abstract class Block {
   private readonly componentSimpleState: object;
 
   // private readonly componentId = `component-${makeUUID()}`;
-  private readonly componentId = `component-${Math.random()*1000}`;
+
+  private readonly componentId = `component-${(Math.random() * 100000000).toFixed(0)}`;
 
   // private
   protected constructor(template: Template, props: Props) {
+    console.log(this.componentId)
     this.template = template;
     this.componentProps = props;
     const { children, simpleState } = this.findChildrenAndState(props.state);

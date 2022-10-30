@@ -1,6 +1,7 @@
-import { Template } from "../../../../../../utils/templateEngine/template";
-import "./controlPanel.scss"
-export const ControlPanelTemplate = new Template(`
+import { Template } from "../../../../../../utils/framework/templateEngine/template";
+import "./controlPanel.scss";
+
+export const controlPanelTemplate = new Template(`
     <div class="control-panel">
         <form class="control-panel_form">
         <button class="control-panel_btn">
@@ -12,4 +13,4 @@ export const ControlPanelTemplate = new Template(`
             </button>
         </form>
     </div>
-`)
+`);

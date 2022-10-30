@@ -1,8 +1,8 @@
-import "./baseInfo.scss"
-import {Template} from "../../utils/templateEngine/template";
+import './baseInfo.scss';
+import { Template } from '../../utils/framework/templateEngine/template';
 
 export const baseInfoTemplate = new Template(
-    `
+  `
     <div class="base-info">
         <div class="base-info_key">
                 <span>
@@ -15,5 +15,5 @@ export const baseInfoTemplate = new Template(
                 </span>
         </div>
     </div>
-    `
-)
+    `,
+);

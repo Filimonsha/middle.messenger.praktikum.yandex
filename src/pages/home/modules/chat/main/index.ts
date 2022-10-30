@@ -1,1 +1,1 @@
-export {mainTemplate as Main} from "./main.tmpl"
+export { MainComponent } from './Main';

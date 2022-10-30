@@ -1,1 +1,1 @@
-export {chatLayoutTemplate as ChatLayout} from "./chatLayout.tmpl"
+export { chatLayoutTemplate as ChatLayout } from './chatLayout.tmpl';

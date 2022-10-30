@@ -1,1 +1,1 @@
-export {sidebarTemplate as Sidebar} from "./sidebar.tmpl"
+export { Sidebar } from './Sidebar';

@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "parcel ./static/index.html",
     "build": "parcel build static/index.html",
-    "serve": "PORT=3000 node ./server/index.ts "
+    "start": "PORT=3000 node ./server/index.ts "
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",

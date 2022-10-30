@@ -1,3 +1,4 @@
+DEPLOY: https://startling-pony-8a5980.netlify.app
 # Important 🤫
 
 This is web messenger build on typescript,scss

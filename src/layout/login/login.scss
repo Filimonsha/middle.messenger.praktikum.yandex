@@ -10,6 +10,10 @@
   }
   &_buttons{
     display: flex;
+    button{
+      width: 100%;
+    }
+
     flex-direction: column;
   }
   &_btn__main{

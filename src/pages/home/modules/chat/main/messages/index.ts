@@ -1,1 +1,1 @@
-export { MessagesComponent } from './Messages';
+export {MessagesComponent} from './Messages';

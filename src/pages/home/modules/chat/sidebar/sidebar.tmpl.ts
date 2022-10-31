@@ -1,4 +1,4 @@
-import { Template } from '../../../../../utils/framework/templateEngine/template';
+import {Template} from '../../../../../utils/framework/templateEngine/template';
 import './sidebar.scss';
 
 export const sidebarTemplate = new Template(`

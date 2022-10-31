@@ -1,0 +1,15 @@
+.input {
+  &__with-label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    &_warning{
+      background: pink;
+      display: none;
+    }
+  }
+
+}
+.d-block{
+  display: block ;
+}

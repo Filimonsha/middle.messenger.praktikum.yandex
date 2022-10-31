@@ -1,6 +1,3 @@
-import { Input } from "../../components/input";
-import { MainBtn } from "../../components/btns/mainBtn";
-import { DefaultBtn } from "../../components/btns/defaultBtn";
 import "./login.scss";
 import { Template } from "../../utils/framework/templateEngine/template";
 

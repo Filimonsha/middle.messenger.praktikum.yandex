@@ -1,4 +1,4 @@
-import { Template } from "../../../../../utils/framework/templateEngine/template";
+import {Template} from "../../../../../utils/framework/templateEngine/template";
 import "./main.scss";
 
 export const mainTemplate = new Template(`

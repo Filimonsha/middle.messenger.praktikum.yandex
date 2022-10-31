@@ -1,8 +1,13 @@
-import { Block } from "../../../../../../utils/framework/block";
-import { messageTemplate } from "./message.tmpl";
+import {Block, Props} from "../../../../../../utils/framework/block";
+import {messageTemplate} from "./message.tmpl";
 
-export class Message extends Block {
-  constructor(props) {
-    super(messageTemplate, props);
-  }
+type MessageState = {
+    user: string,
+    messageText: string
+}
+
+export class Message extends Block<MessageState> {
+    constructor(props: Props<MessageState>) {
+        super(messageTemplate, props);
+    }
 }

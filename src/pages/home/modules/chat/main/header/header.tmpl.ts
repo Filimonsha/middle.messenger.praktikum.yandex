@@ -1,6 +1,6 @@
-import { Template } from '../../../../../../utils/framework/templateEngine/template';
+import {Template} from '../../../../../../utils/framework/templateEngine/template';
 import './header.scss';
-import { OptionIcon } from '../../../../../../components/icons/optionIcon';
+import {OptionIcon} from '../../../../../../components/icons/optionIcon';
 
 export const headerTemplate = new Template(`
         <div class="header">

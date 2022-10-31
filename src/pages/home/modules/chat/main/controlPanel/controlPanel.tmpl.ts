@@ -1,4 +1,4 @@
-import { Template } from "../../../../../../utils/framework/templateEngine/template";
+import {Template} from "../../../../../../utils/framework/templateEngine/template";
 import "./controlPanel.scss";
 
 export const controlPanelTemplate = new Template(`

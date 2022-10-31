@@ -7,10 +7,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  &_desc{
+
+  &_desc {
     max-width: 200px;
     overflow: hidden;
   }
+
   &_img {
     width: 104px;
     height: 104px;
@@ -31,16 +33,19 @@
     font-size: 9px;
     line-height: 11px;
   }
-  &_notification{
+
+  &_notification {
     border: 1px solid #000000;
     filter: drop-shadow(2.25px 2.25px 2.25px rgba(0, 0, 0, 0.25));
     border-radius: 3px;
     padding: 5px 10px;
   }
-  &:not(:last-child){
+
+  &:not(:last-child) {
     margin-bottom: 10px;
   }
-  &_info{
+
+  &_info {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

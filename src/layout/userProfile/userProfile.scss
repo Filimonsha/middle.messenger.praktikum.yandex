@@ -1,0 +1,21 @@
+.user-profile{
+  display: flex;
+  flex-direction: column;
+  //justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  &_logo{
+    margin-bottom: 15px;
+  }
+  &_name{
+    margin-bottom: 10px;
+  }
+  &_change-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .base-info:not(:last-child){
+    margin-bottom: 15px;
+  }
+}

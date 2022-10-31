@@ -1,0 +1,36 @@
+.message{
+  display: flex;
+  padding: 20px 50px;
+  flex-direction: column;
+  border-width: 1px 0px;
+  border-style: solid;
+  border-color: #C8C8C8;
+  border-radius: 3px;
+  max-width: 500px;
+  overflow: hidden;
+
+  &_check{
+    display: none;
+  }
+  &_info{
+    display: flex;
+    align-items: center;
+  }
+  &_time{
+    border-bottom: 1.60151px solid #7D7C7C;
+    margin-bottom: 10px;
+  }
+}
+
+.message__my{
+  align-self: end;
+  flex-direction: column-reverse;
+  background: #F7F9FF;
+  .message_check{
+    display: block;
+  }
+  .message_time{
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+}

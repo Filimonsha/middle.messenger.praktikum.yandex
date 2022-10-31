@@ -1,0 +1,1 @@
+export { RegistrationLayoutComponent } from "./Registration";

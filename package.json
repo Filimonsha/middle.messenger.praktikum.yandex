@@ -4,6 +4,19 @@
     "build": "parcel build static/index.html",
     "start": "PORT=3000 node ./server/index.ts "
   },
+  "targets": {
+    "frontend": {
+      "context": "browser",
+      "source": [
+        "static/index.html"
+      ]
+    },
+    "backend": {
+      "context": "node",
+      "source": "src/server.ts"
+    }
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",
     "@types/node": "^18.8.3",

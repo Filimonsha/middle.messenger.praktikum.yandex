@@ -1,8 +1,8 @@
-const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
+enum METHODS  {
+    GET = 'GET',
+    POST = 'POST',
+    PUT = 'PUT',
+    DELETE ='DELETE',
 };
 
 /**
@@ -10,7 +10,7 @@ const METHODS = {
  * На входе: объект. Пример: {a: 1, b: 2, c: {d: 123}, k: [1, 2, 3]}
  * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
  */
-function queryStringify(data) {
+function queryStringify(data:object) {
     let str = '?';
     Object.entries(data).forEach((cortege, index) => {
         const name = cortege[0];
@@ -20,16 +20,17 @@ function queryStringify(data) {
     return str;
     // Можно делать трансформацию GET-параметров в отдельной функции
 }
-
+type Options = {[optionName:string]:any}
+type HTTPMethod = (url: string, options?: Options,data?:any) => Promise<unknown>
 export class HTTPTransport {
-    get = (url, options = {}) => this.request(url, {...options, method: METHODS.GET});
+    get:HTTPMethod = (url, options = {}) => this.request(url, {...options, method: METHODS.GET});
 
-    put = (url, data, option = {}) => this.request(url, {...option, method: METHODS.PUT, data});
+    put:HTTPMethod = (url, option = {},data) => this.request(url, {...option, method: METHODS.PUT, data});
 
-    post = (url, data, option = {}) => this.request(url, {...option, method: METHODS.POST, data});
+    post:HTTPMethod = (url,  option = {},data) => this.request(url, {...option, method: METHODS.POST, data});
 
-    delete = (url, data, option = {}) => this.request(url, {...option, method: METHODS.DELETE, data});
-    request = (url, options, timeout = 5000) => new Promise((resolve, reject) => {
+    delete:HTTPMethod = (url,  option = {},data) => this.request(url, {...option, method: METHODS.DELETE, data});
+    request = (url:string, options:Options) => new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         if (options.method === METHODS.GET && options.data) {
             xhr.open(options.method, url + queryStringify(options.data));

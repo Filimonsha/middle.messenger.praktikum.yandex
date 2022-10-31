@@ -1,40 +1,39 @@
 interface IEventBus {
-    subscribeCallbackOnEvent: (eventName:string, callback:Function) => void,
-    unSubscribeCallbackFromEvent: (eventName:string, callback:Function) => void,
-    notify: (eventName:string) => void
+    subscribeCallbackOnEvent: (eventName: string, callback: Function) => void,
+    unSubscribeCallbackFromEvent: (eventName: string, callback: Function) => void,
+    notify: (eventName: string) => void
 }
 
+type Listeners = { [event: string]: Array<Function> }
+
 export class EventBus implements IEventBus {
-  private listeners:object = {};
+    private listeners: Listeners = {};
 
-  constructor() {
-  }
+    subscribeCallbackOnEvent(eventName: string, callback: Function): void {
+        if (!this.listeners[eventName]) {
+            this.listeners[eventName] = [];
+        }
 
-  subscribeCallbackOnEvent(eventName: string, callback: Function): void {
-    if (!this.listeners[eventName]) {
-      this.listeners[eventName] = [];
+        this.listeners[eventName]?.push(callback);
     }
 
-    this.listeners[eventName].push(callback);
-  }
+    unSubscribeCallbackFromEvent(eventName: string, callback: Function): void {
+        if (!this.listeners[eventName]) {
+            throw new Error('This event does not exist');
+        }
 
-  unSubscribeCallbackFromEvent(eventName: string, callback: Function): void {
-    if (!this.listeners[eventName]) {
-      throw new Error('This event does not exist');
+        this.listeners[eventName] = this.listeners[eventName].filter(
+            (listener) => listener !== callback,
+        );
     }
 
-    this.listeners[eventName] = this.listeners[eventName].filter(
-      (listener) => listener !== callback,
-    );
-  }
+    notify(eventName: string, ...args: any[]) {
+        if (!this.listeners[eventName]) {
+            throw new Event(`Нет события: ${eventName}`);
+        }
 
-  notify(event, ...args) {
-    if (!this.listeners[event]) {
-      throw new Event(`Нет события: ${event}`);
+        this.listeners[eventName].forEach((listener) => {
+            listener(...args);
+        });
     }
-
-    this.listeners[event].forEach((listener) => {
-      listener(...args);
-    });
-  }
 }

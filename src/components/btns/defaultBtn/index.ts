@@ -1,8 +1,14 @@
-import { Block } from "../../../utils/framework/block";
+import {Block, Props} from "../../../utils/framework/block";
 import { defaultBtnTemplate } from "./defaultBtn.tmpl";
 
-export class DefaultBtn extends Block {
-  constructor(props) {
+export type DefaultBtnState = {
+  type:string,
+  text:string,
+  handleClick?:EventListener
+}
+
+export class DefaultBtn extends Block<DefaultBtnState> {
+  constructor(props:Props<DefaultBtnState>) {
     super(defaultBtnTemplate, props);
   }
 }

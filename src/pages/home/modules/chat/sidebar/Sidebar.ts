@@ -1,8 +1,9 @@
-import { Block } from "../../../../../utils/framework/block";
+import {Block, Props} from "../../../../../utils/framework/block";
 import { sidebarTemplate } from "./sidebar.tmpl";
 import { ChatItem } from "../components/chatItem";
+import {ChatItemState} from "../components/chatItem/ChatItem";
 
-const chats = [
+const chats:Array<ChatItemState> = [
   {
     imgSrc: "",
     userName: "Oleg",
@@ -60,9 +61,11 @@ const sidebarState = {
     ),
   },
 };
-
-export class Sidebar extends Block {
-  constructor(props) {
+type SidebarState = {
+  chatItems:ChatItem[]
+}
+export class Sidebar extends Block<SidebarState> {
+  constructor(props:Props<SidebarState>) {
     super(sidebarTemplate, props);
   }
 }

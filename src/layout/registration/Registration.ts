@@ -1,131 +1,143 @@
-import { Block } from "../../utils/framework/block";
+import {Block, Props} from "../../utils/framework/block";
 import { registrationLayoutTemplate } from "./registration.tmpl";
-import { Input } from "../../components/input";
+import {Input, InputState} from "../../components/input";
 import { Validator } from "../../utils/helpers/validator/validator";
-import { MainBtn } from "../../components/btns/mainBtn";
-import { DefaultBtn } from "../../components/btns/defaultBtn";
+import {MainBtn, MainBtnState} from "../../components/btns/mainBtn";
+import {DefaultBtn, DefaultBtnState} from "../../components/btns/defaultBtn";
 import { loginAndPasswordValidationHandle } from "../login/Login";
+const validator = new Validator();
 
-const registrationInputs = [
+const registrationInputs:Array<Props<InputState>> = [
   {
     state: {
       labelName: "Почта",
       validatorName: "email",
-      inputValue: "Email",
+      placeholder: "email",
       type: "text",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "email");
+      name:"email",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "email")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "email");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "email")
       },
+      errors: "",
+      value:""
     },
   },
   {
     state: {
       labelName: "Логин",
       validatorName: "login",
-
-      inputValue: "Логин",
+      placeholder: "Логин",
       type: "text",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "login");
+      name:"login",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "login")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "login");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "login")
       },
+      errors: "",
+      value:""
     },
   },
   {
     state: {
       labelName: "Имя",
       validatorName: "firstName",
-      inputValue: "Имя",
+      placeholder: "Имя",
       type: "text",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "firstName");
+      name:"first_name",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "firstName")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "firstName");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "firstName")
       },
+      errors: "",
+      value:""
     },
+
+
   },
   {
     state: {
       labelName: "Фамилия",
       validatorName: "secondName",
-      inputValue: "Email",
+      placeholder: "Фамилия",
       type: "text",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "secondName");
+      name:"second_name",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "secondName")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "secondName");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "secondName")
       },
+      errors: "",
+      value:""
     },
   },
   {
     state: {
       labelName: "Телефон",
       validatorName: "phone",
-      inputValue: "Email",
+      placeholder: "Телефон",
       type: "text",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "phone");
+      name:"phone",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "phone")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "phone");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "phone")
       },
+      errors: "",
+      value:""
     },
   },
   {
     state: {
       labelName: "Пароль",
       validatorName: "password",
-      inputValue: "Email",
+      placeholder: "Пароль",
       type: "password",
-    },
-    events: {
-      blur({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "password");
+      name:"password",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "password")
       },
-      focus({ target }) {
-        loginAndPasswordValidationHandle.call(this, target, "password");
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "password")
       },
+      errors: "",
+      value:""
     },
   },
   {
     state: {
       labelName: "Пароль (ещё раз)",
       validatorName: "password",
-      inputValue: "Email",
+      placeholder: "Пароль",
       type: "password",
+      name:"password",
+      handleBlur({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "password")
+      },
+      handleFocus({target}) {
+        loginAndPasswordValidationHandle.call(this, target, "password")
+      },
+      errors: "",
+      value:""
     },
   },
 ];
-const validator = new Validator();
-const mainBtnData = {
+const mainBtnData:Props<MainBtnState> = {
   state: {
     type: "submit",
     text: "Enter",
   },
-  events: {
-    submit: (e) => {
-      console.log("Submit");
-    },
-  },
+
 };
-const defaultBtnData = {
+const defaultBtnData:Props<DefaultBtnState> = {
   state: {
     type: "button",
     text: "Not register yet ?",
@@ -135,29 +147,44 @@ const defaultBtnData = {
   },
 };
 
-class RegistrationLayout extends Block {
-  constructor(props) {
+type RegistrationLayoutState = {
+  MainButton:  MainBtn,
+  DefaultButton: DefaultBtn,
+  inputs: Array<Input>,
+}
+
+
+
+class RegistrationLayout extends Block<RegistrationLayoutState> {
+  constructor(props:Props<RegistrationLayoutState>) {
     super(registrationLayoutTemplate, props);
   }
 }
 
-const registrationProps = {
+const registrationProps:Props<RegistrationLayoutState> = {
   state: {
     MainButton: new MainBtn(mainBtnData),
     DefaultButton: new DefaultBtn(defaultBtnData),
     inputs: registrationInputs.map((inputState) => new Input(inputState)),
   },
   events: {
-    submit(e) {
+    submit(e:SubmitEvent) {
       e.preventDefault();
-      this.getComponentChildren().inputs.forEach((login) => {
+      this.getComponentChildren().logins.forEach((login: Input) => {
         const currentLoginInputState = login.getState();
-        console.error(
-          validator.validate(
-            currentLoginInputState.validatorName,
-            currentLoginInputState.inputValue
-          )
-        );
+        if (validator.validate(
+            currentLoginInputState.labelName,
+            login.getCompiledElement()?.querySelector("input")?.value || ""
+        )) {
+          console.error(
+              validator.validate(
+                  currentLoginInputState.labelName,
+                  login.getCompiledElement()?.querySelector("input")?.value || ""
+              )
+          );
+        } else {
+          console.log(login.getCompiledElement()?.querySelector("input")?.value)
+        }
       });
     },
   },

@@ -1,197 +1,220 @@
-import { v4 as makeUUID } from "uuid";
-import { EventBus } from "../eventBus";
-import { Events } from "./const/events";
-import { Template } from "../templateEngine/template";
-import { CHAT } from "../../../const/DOMElements";
-import { AttributeHandler } from "../attributeHandler";
-import { isEmpty } from "../../myDash/isEmpty";
+import {v4 as makeUUID} from "uuid";
+import {EventBus} from "../eventBus";
+import {Events} from "./const/events";
+import {Template} from "../templateEngine/template";
+import {AttributeHandler} from "../attributeHandler";
 
-type Props = {
-  state: object;
-  events?: object;
+
+interface State {
+    [stateName: string]: any
+}
+
+export interface Props<T> {
+    state: T;
+    events?: { [eventName: string]: EventListener };
 };
+type Children = { [childrenName: string]: Array<Block<any>> | Block<any> }
 
-export abstract class Block {
-  private eventBus = new EventBus();
+export abstract class Block<UserState extends State> {
 
-  private element: HTMLElement;
+    private eventBus = new EventBus();
 
-  private readonly template: Template;
+    private element: HTMLElement | Element;
 
-  private readonly componentProps: Props;
+    private readonly template: Template;
 
-  private componentState;
+    private readonly componentProps: Props<UserState>
 
-  private readonly componentChildren: object | null;
+    private componentState: UserState;
 
-  private readonly componentSimpleState: object;
+    private readonly componentChildren: object | null;
 
-  private readonly componentId = `component-${makeUUID()}`;
 
-  // private
-  protected constructor(template: Template, props: Props) {
-    this.template = template;
-    this.componentProps = props;
-    const { children, simpleState } = this.findChildrenAndState(props.state);
-    this.componentChildren = children;
-    this.componentSimpleState = simpleState;
-    if (children) {
-      this.createDummyChildren();
-    }
-    this.makeStateProxy();
-    this.registerEvents();
-    this.eventBus.notify(Events.INIT);
-  }
+    private readonly componentId = `component-${makeUUID()}`;
 
-  private registerEvents = () => {
-    this.eventBus.subscribeCallbackOnEvent(Events.INIT, this.init.bind(this));
-    this.eventBus.subscribeCallbackOnEvent(
-      Events.COMPONENT_DID_MOUNT,
-      this.componentDidMount.bind(this)
-    );
-    this.eventBus.subscribeCallbackOnEvent(
-      Events.COMPONENT_RENDER,
-      this.render.bind(this)
-    );
-    this.eventBus.subscribeCallbackOnEvent(
-      Events.COMPONENT_DID_UPDATE,
-      this.componentDidUpdate.bind(this)
-    );
-  };
-
-  // State Proxy
-  private makeStateProxy = () => {
-    const handlers: ProxyHandler<any> = {
-      set: (target, p, value) => {
-        target[p] = value;
-        this.eventBus.notify(Events.COMPONENT_DID_UPDATE);
-        return true;
-      },
-    };
-    this.componentState = new Proxy(this.componentProps.state, handlers);
-  };
-
-  // Events
-  private init = () => {
-    const createDummyElement = () => {
-      this.element = document.createElement("div");
-    };
-
-    createDummyElement();
-    this.eventBus.notify(Events.COMPONENT_RENDER);
-  };
-
-  private componentDidMount(oldProps) {
-    console.log("component did mount");
-  }
-
-  private componentDidUpdate() {
-    console.log(" Component Did update!");
-    this.eventBus.notify(Events.COMPONENT_RENDER);
-  }
-
-  private render = () => {
-    if (this.element && this.componentProps.events) {
-      Object.keys(this.componentProps.events).forEach((eventName) => {
-        this.element.removeEventListener(
-          eventName,
-          this.componentProps.events[eventName]
-        );
-      });
-    }
-    this.element.innerHTML = this.template.compile(this.componentState);
-    this.element = this.element.children[0];
-    console.log(this.element.children);
-    // AttributeHandler.handEventsAttributes(this.element)
-    if (this.componentChildren) {
-      this.renderChildren();
-    }
-
-    if (this.componentProps.events) {
-      Object.keys(this.componentProps.events).forEach((eventName) => {
-        this.element.addEventListener(
-          eventName,
-          this.componentProps.events[eventName].bind(this)
-        );
-      });
-    }
-  };
-
-  // find children
-  private findChildrenAndState = (state) => {
-    const children = {};
-    const simpleState = {};
-
-    Object.entries(state).forEach(([key, value]) => {
-      const stateValueIsArray = Array.isArray(value);
-      if (stateValueIsArray) {
-        if (value.every((element) => element instanceof Block)) {
-          children[key] = [];
-          value.forEach((childElement: Block, index) => {
-            children[key].push(childElement);
-          });
+    protected constructor(template: Template, props: Props<UserState>) {
+        this.template = template;
+        this.componentProps = props;
+        this.componentChildren = this.findChildrenAndState(props.state);
+        if (this.componentChildren) {
+            this.createDummyChildren();
         }
-      } else if (value instanceof Block) {
-        children[key] = value;
-      } else {
-        simpleState[key] = value;
-      }
-    });
-    return { children, simpleState };
-  };
+        this.makeStateProxy();
+        this.registerEvents();
+        this.eventBus.notify(Events.INIT);
+    }
 
-  private createDummyChildren() {
-    const createDummyChild = (childrenValue: Block, childrenName: string) => {};
-    Object.entries(this.componentChildren).forEach((children) => {
-      const childrenName = children[0];
-      const childrenValue: Block | Array<Block> = children[1];
-      if (Array.isArray(childrenValue)) {
-        childrenValue.forEach((child, index) => {
-          const childrenDummy = `
+    private registerEvents = () => {
+        this.eventBus.subscribeCallbackOnEvent(Events.INIT, this.init.bind(this));
+        this.eventBus.subscribeCallbackOnEvent(
+            Events.COMPONENT_DID_MOUNT,
+            this.componentDidMount.bind(this)
+        );
+        this.eventBus.subscribeCallbackOnEvent(
+            Events.COMPONENT_RENDER,
+            this.render.bind(this)
+        );
+        this.eventBus.subscribeCallbackOnEvent(
+            Events.COMPONENT_DID_UPDATE,
+            this.componentDidUpdate.bind(this)
+        );
+    };
+
+    // State Proxy
+    private makeStateProxy = () => {
+        const handlers: ProxyHandler<any> = {
+            set: (target, p, value) => {
+                target[p] = value;
+                console.log("Hm", target[p])
+
+                this.eventBus.notify(Events.COMPONENT_DID_UPDATE);
+                return true;
+            },
+        };
+        this.componentState = new Proxy(this.componentProps.state, handlers);
+    };
+
+    private createDummyElement() {
+        this.element = document.createElement("div");
+    };
+
+    // Events
+    private init = () => {
+        this.createDummyElement();
+        this.eventBus.notify(Events.COMPONENT_RENDER);
+    };
+
+    private componentDidMount(oldProps: Props<UserState>) {
+        console.log("component did mount", oldProps);
+    }
+
+    private componentDidUpdate() {
+        console.log(" Component Did update!", this.componentState);
+        this.eventBus.notify(Events.COMPONENT_RENDER);
+    }
+
+    private render = () => {
+        const componentEvents = this.componentProps.events
+        if (this.element && componentEvents) {
+            Object.keys(componentEvents).forEach((eventName) => {
+                this.element.removeEventListener(
+                    eventName,
+                    componentEvents[eventName]
+                );
+            });
+        }
+
+        // this.element.innerHTML = this.template.compile(this.componentState)
+        console.log(this.element.children.length)
+        // if (this.element.children.length > 1) {
+        //     let compiledElement = document.createElement("div")
+        //     compiledElement.innerHTML = this.template.compile(this.componentState)
+        //     this.element.replaceWith(compiledElement.children[0])
+        //
+        // } else {
+            this.element.innerHTML = this.template.compile(this.componentState)
+            this.element = this.element.children[0]
+            console.log(this.element.children)
+        // }
+        // this.element = compiledElement.children[0];
+
+        const functionInState = Object.entries(this.componentState).reduce((prevValue, [stateName, stateValue]) => {
+            if (typeof stateValue === "function") {
+                return {...prevValue, [stateName]: stateValue}
+            }
+            return prevValue
+        }, {})
+        if (functionInState) AttributeHandler.handEventsAttributes.call(this, this.element, functionInState)
+
+        if (this.componentChildren) {
+            this.renderChildren();
+        }
+
+        if (componentEvents) {
+            Object.keys(componentEvents).forEach((eventName) => {
+                this.element.addEventListener(
+                    eventName,
+                    componentEvents[eventName].bind(this)
+                );
+            });
+        }
+    };
+
+    // find children
+    private findChildrenAndState = (state: State) => {
+        const children: Children = {};
+
+        Object.entries(state).forEach(([key, value]) => {
+            const stateValueIsArray = Array.isArray(value);
+            if (stateValueIsArray) {
+                if (value.every((element) => element instanceof Block)) {
+                    children[key] = [];
+                    value.forEach((childElement: Block<UserState>) => {
+                        // @ts-ignore
+                        children[key].push(childElement);
+                    });
+                }
+            } else if (value instanceof Block) {
+                children[key] = value;
+            }
+        });
+        return children;
+    };
+
+    private createDummyChildren() {
+        this.componentChildren && Object.entries(this.componentChildren).forEach((children) => {
+            const childrenName = children[0];
+            const childrenValue: Block<any> | Array<Block<any>> = children[1];
+            if (Array.isArray(childrenValue)) {
+                childrenValue.forEach((child, index) => {
+                    const childrenDummy = `
                 <div id=${child.componentId}></div>
             `;
-          this.componentProps.state[childrenName][index] = childrenDummy;
-        });
-      } else {
-        const childrenDummy = `
+                    this.componentProps.state[childrenName][index] = childrenDummy;
+                });
+            } else {
+                const childrenDummy = `
                 <div id=${childrenValue.componentId}></div>
             `;
-        this.componentProps.state[childrenName] = childrenDummy;
-      }
-    });
-  }
+                // @ts-ignore
+                this.componentProps.state[childrenName] = childrenDummy;
+            }
+        });
+    }
 
-  private renderChildren() {
-    const renderOneChild = (child: Block) => {
-      const childrenId = `#${child.componentId.toString()}`;
-      const foundChildrenDummy = this.element.querySelector(childrenId);
-      if (foundChildrenDummy) {
-        console.error(foundChildrenDummy);
-        foundChildrenDummy.replaceWith(child.getCompiledElement());
-      } else {
-        throw new Error("In template didnt find children layout!");
-      }
+    private renderChildren() {
+        const renderOneChild = (child: Block<any>) => {
+            const childrenId = `#${child.componentId.toString()}`;
+            const foundChildrenDummy = this.element.querySelector(childrenId);
+            if (foundChildrenDummy) {
+                foundChildrenDummy.replaceWith(child.getCompiledElement());
+            } else {
+                throw new Error("In template didnt find children layout!");
+            }
+        };
+        this.componentChildren && Object.values(this.componentChildren).forEach((children) => {
+            if (Array.isArray(children)) children.forEach(renderOneChild);
+            else renderOneChild(children);
+        });
+    }
+
+    // User interaction
+    public updateState = (stateName: string, newValue: any) => {
+        const stateIsEqual = this.componentState[stateName] === newValue
+        if (!stateIsEqual) {
+            this.componentState[stateName] = newValue;
+        }
     };
-    Object.values(this.componentChildren).forEach((children) => {
-      if (Array.isArray(children)) children.forEach(renderOneChild);
-      else renderOneChild(children);
-    });
-  }
 
-  // User interaction
-  public updateState = (stateName, newValue) => {
-    this.componentState[stateName] = newValue;
-  };
+    public getState = () => ({...this.componentState});
 
-  public getState = () => ({ ...this.componentState });
+    public getComponentChildren = () => ({...this.componentChildren});
 
-  public getComponentChildren = () => ({ ...this.componentChildren });
+    public getCompiledElement = () => this.element;
 
-  public getCompiledElement = () => this.element;
-
-  public renderDom = (rootSelector: string) => {
-    const root = document.querySelector(rootSelector);
-    root.appendChild(this.element);
-    this.eventBus.notify(Events.COMPONENT_DID_MOUNT);
-  };
+    public renderDom = (rootSelector: string) => {
+        const root = document.querySelector(rootSelector);
+        root && root.appendChild(this.element);
+        this.eventBus.notify(Events.COMPONENT_DID_MOUNT);
+    };
 }

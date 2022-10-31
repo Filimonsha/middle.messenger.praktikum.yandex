@@ -1,8 +1,16 @@
-import { Block } from "../../../../../../utils/framework/block";
-import { chatItemTemplate } from "./chatItem.tmpl";
+import {Block, Props} from "../../../../../../utils/framework/block";
+import {chatItemTemplate} from "./chatItem.tmpl";
 
-export class ChatItem extends Block {
-  constructor(props) {
-    super(chatItemTemplate, props);
-  }
+export type ChatItemState = {
+    imgSrc: string,
+    userName: string,
+    lastMsg: string,
+    lastMsgTime: string,
+    countOfNotification: number,
+}
+
+export class ChatItem extends Block<ChatItemState> {
+    constructor(props: Props<ChatItemState>) {
+        super(chatItemTemplate, props);
+    }
 }

@@ -1,3 +1,4 @@
+
 import {v4 as makeUUID} from "uuid";
 import {EventBus} from "../eventBus";
 import {Events} from "./const/events";
@@ -42,6 +43,7 @@ export abstract class Block<UserState extends State> {
         this.makeStateProxy();
         this.registerEvents();
         this.eventBus.notify(Events.INIT);
+
     }
 
     private registerEvents = () => {

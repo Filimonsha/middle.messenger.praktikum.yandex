@@ -1,25 +1,25 @@
-
 import {v4 as makeUUID} from "uuid";
 import {EventBus} from "../eventBus";
 import {Events} from "./const/events";
 import {Template} from "../templateEngine/template";
 import {AttributeHandler} from "../attributeHandler";
+import doc = Mocha.reporters.doc;
 
-
-interface State {
+export interface State {
     [stateName: string]: any
 }
 
 export interface Props<T> {
     state: T;
     events?: { [eventName: string]: EventListener };
-};
+}
+
 type Children = { [childrenName: string]: Array<Block<any>> | Block<any> }
 
 export abstract class Block<UserState extends State> {
 
     private eventBus = new EventBus();
-
+    private renderCount = 0
     private element: HTMLElement | Element;
 
     private readonly template: Template;
@@ -28,7 +28,7 @@ export abstract class Block<UserState extends State> {
 
     private componentState: UserState;
 
-    private readonly componentChildren: object | null;
+    private componentChildren: object | null;
 
 
     private readonly componentId = `component-${makeUUID()}`;
@@ -37,13 +37,16 @@ export abstract class Block<UserState extends State> {
         this.template = template;
         this.componentProps = props;
         this.componentChildren = this.findChildrenAndState(props.state);
+
+
         if (this.componentChildren) {
             this.createDummyChildren();
         }
         this.makeStateProxy();
+        if (this.componentState?.chatItems) {
+        }
         this.registerEvents();
         this.eventBus.notify(Events.INIT);
-
     }
 
     private registerEvents = () => {
@@ -67,7 +70,28 @@ export abstract class Block<UserState extends State> {
         const handlers: ProxyHandler<any> = {
             set: (target, p, value) => {
                 target[p] = value;
-                console.log("Hm", target[p])
+                const stateValueIsArray = Array.isArray(value);
+                if (stateValueIsArray) {
+                    if (value.every((element) => element instanceof Block)) {
+                        if (this.componentChildren) {
+                            // @ts-ignore
+                            this.componentChildren[p] = [];
+                        } else {
+                            //TODO componentChildren = {}
+                        }
+                        value.forEach((childElement: Block<UserState>) => {
+                            this.componentChildren[p].push(childElement);
+                        });
+                        this.createDummyChildren();
+
+                    }else if (value.includes((element: any) => element instanceof Block)) {
+                        this.componentChildren[p] = value.find(element => element instanceof Block)
+
+                        this.createDummyChildren();
+
+                        // children[key] =
+                    }
+                }
 
                 this.eventBus.notify(Events.COMPONENT_DID_UPDATE);
                 return true;
@@ -82,6 +106,7 @@ export abstract class Block<UserState extends State> {
 
     // Events
     private init = () => {
+        //TODO
         this.createDummyElement();
         this.eventBus.notify(Events.COMPONENT_RENDER);
     };
@@ -96,6 +121,7 @@ export abstract class Block<UserState extends State> {
     }
 
     private render = () => {
+        this.renderCount += 1
         const componentEvents = this.componentProps.events
         if (this.element && componentEvents) {
             Object.keys(componentEvents).forEach((eventName) => {
@@ -106,19 +132,27 @@ export abstract class Block<UserState extends State> {
             });
         }
 
-        // this.element.innerHTML = this.template.compile(this.componentState)
-        console.log(this.element.children.length)
-        // if (this.element.children.length > 1) {
-        //     let compiledElement = document.createElement("div")
-        //     compiledElement.innerHTML = this.template.compile(this.componentState)
-        //     this.element.replaceWith(compiledElement.children[0])
-        //
-        // } else {
+        // const fragment = document.createElement('template');
+        // fragment.innerHTML = this.template.compile(this.componentState)
+        // this.element.innerHTML = ""
+        // this.element.appendChild(fragment.content)
+        // fragment.content;
+
+
+        //TODO
+        if (this.renderCount > 1) {
+
+            // this.element.innerHTML =  document.createElement("div");
+            this.element.innerHTML = document.createElement("div");
+
+            this.element.innerHTML = this.template.compile(this.componentState)
+
+        } else {
             this.element.innerHTML = this.template.compile(this.componentState)
             this.element = this.element.children[0]
-            console.log(this.element.children)
-        // }
+        }
         // this.element = compiledElement.children[0];
+
 
         const functionInState = Object.entries(this.componentState).reduce((prevValue, [stateName, stateValue]) => {
             if (typeof stateValue === "function") {
@@ -145,11 +179,13 @@ export abstract class Block<UserState extends State> {
     // find children
     private findChildrenAndState = (state: State) => {
         const children: Children = {};
-
-        Object.entries(state).forEach(([key, value]) => {
+        state && Object.entries(state).forEach(([key, value]) => {
             const stateValueIsArray = Array.isArray(value);
+
             if (stateValueIsArray) {
+
                 if (value.every((element) => element instanceof Block)) {
+                    console.log(1)
                     children[key] = [];
                     value.forEach((childElement: Block<UserState>) => {
                         // @ts-ignore
@@ -157,6 +193,7 @@ export abstract class Block<UserState extends State> {
                     });
                 }
             } else if (value instanceof Block) {
+
                 children[key] = value;
             }
         });
@@ -182,6 +219,7 @@ export abstract class Block<UserState extends State> {
                 this.componentProps.state[childrenName] = childrenDummy;
             }
         });
+
     }
 
     private renderChildren() {
@@ -194,6 +232,7 @@ export abstract class Block<UserState extends State> {
                 throw new Error("In template didnt find children layout!");
             }
         };
+
         this.componentChildren && Object.values(this.componentChildren).forEach((children) => {
             if (Array.isArray(children)) children.forEach(renderOneChild);
             else renderOneChild(children);
@@ -201,7 +240,7 @@ export abstract class Block<UserState extends State> {
     }
 
     // User interaction
-    public updateState = (stateName: string, newValue: any) => {
+    public updateState = <T>(stateName: string, newValue: T) => {
         const stateIsEqual = this.componentState[stateName] === newValue
         if (!stateIsEqual) {
             this.componentState[stateName] = newValue;
@@ -214,9 +253,10 @@ export abstract class Block<UserState extends State> {
 
     public getCompiledElement = () => this.element;
 
+
     public renderDom = (rootSelector: string) => {
         const root = document.querySelector(rootSelector);
-        root && root.appendChild(this.element);
+        root && root.replaceChildren(this.element);
         this.eventBus.notify(Events.COMPONENT_DID_MOUNT);
     };
 }

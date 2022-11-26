@@ -2,6 +2,8 @@ import {Block, Props} from "../../utils/framework/block";
 import {chatLayoutTemplate} from "./chatLayout.tmpl";
 import SidebarComponent from "../../pages/home/modules/chat/sidebar/Sidebar";
 import {MainComponent} from "../../pages/home/modules/chat/main";
+import {connect} from "../../utils/framework/applicationStateManager/utils/connect";
+
 
 const chatLayoutProps = {
     state: {
@@ -20,4 +22,10 @@ class ChatLayout extends Block<ChatLayoutState> {
     }
 }
 
-export const ChatLayoutComponent = new ChatLayout(chatLayoutProps);
+const mapStateToProps = state => {
+    return {
+        currentChat: state.currentChatId
+    }
+}
+
+export const ChatLayoutComponent = connect(new ChatLayout(chatLayoutProps), mapStateToProps);

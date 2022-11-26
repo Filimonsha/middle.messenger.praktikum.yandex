@@ -82,6 +82,7 @@ export class Validator {
                 validateError: "Сообщение пустое",
             },
         ],
+        displayName: []
     };
 
     public validate(typeOfValidator: string, value: string) {

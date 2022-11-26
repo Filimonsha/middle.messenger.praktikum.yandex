@@ -1,8 +1,8 @@
-enum METHODS  {
+enum METHODS {
     GET = 'GET',
     POST = 'POST',
     PUT = 'PUT',
-    DELETE ='DELETE',
+    DELETE = 'DELETE',
 };
 
 /**
@@ -10,7 +10,7 @@ enum METHODS  {
  * На входе: объект. Пример: {a: 1, b: 2, c: {d: 123}, k: [1, 2, 3]}
  * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
  */
-function queryStringify(data:object) {
+function queryStringify(data: object) {
     let str = '?';
     Object.entries(data).forEach((cortege, index) => {
         const name = cortege[0];
@@ -20,23 +20,48 @@ function queryStringify(data:object) {
     return str;
     // Можно делать трансформацию GET-параметров в отдельной функции
 }
-type Options = {[optionName:string]:any}
-type HTTPMethod = (url: string, options?: Options,data?:any) => Promise<unknown>
+
+type Options = { [optionName: string]: any }
+type HTTPMethod = (url: string, data?: any, options?: Options) => Promise<unknown>
+
 export class HTTPTransport {
-    get:HTTPMethod = (url, options = {}) => this.request(url, {...options, method: METHODS.GET});
+    private readonly baseUrl: string;
 
-    put:HTTPMethod = (url, option = {},data) => this.request(url, {...option, method: METHODS.PUT, data});
+    constructor(baseUrl: string, endpointEntity: string) {
+        this.baseUrl = baseUrl + endpointEntity
+    }
 
-    post:HTTPMethod = (url,  option = {},data) => this.request(url, {...option, method: METHODS.POST, data});
+    get: HTTPMethod =  (url, options = {}) => {
+        return  this.request(this.baseUrl + url, {...options, method: METHODS.GET});
+    }
 
-    delete:HTTPMethod = (url,  option = {},data) => this.request(url, {...option, method: METHODS.DELETE, data});
-    request = (url:string, options:Options) => new Promise((resolve, reject) => {
+    put: HTTPMethod = (url, data, option = {}) => this.request(this.baseUrl + url, {
+        ...option,
+        method: METHODS.PUT,
+        data
+    });
+
+    post: HTTPMethod = (url, data, option = {},) => this.request(this.baseUrl + url, {
+        ...option,
+        method: METHODS.POST,
+        data
+    });
+
+    delete: HTTPMethod = (url, data, option = {}) => this.request(this.baseUrl + url, {
+        ...option,
+        method: METHODS.DELETE,
+        data
+    });
+    request = (url: string, options: Options) => new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true
         if (options.method === METHODS.GET && options.data) {
             xhr.open(options.method, url + queryStringify(options.data));
-        } else xhr.open(options.method, url);
+        } else {
+            xhr.open(options.method, url)
+        }
 
-        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         if (options.headers) {
             Object.entries<string>(options.headers).forEach((cartage) => {
                 const name = cartage[0];

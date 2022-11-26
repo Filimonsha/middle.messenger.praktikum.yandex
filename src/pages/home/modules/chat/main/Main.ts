@@ -1,8 +1,9 @@
 import {Block, Props} from "../../../../../utils/framework/block";
 import {mainTemplate} from "./main.tmpl";
-import {HeaderComponent} from "./header";
 import {MessagesComponent} from "./messages";
 import {ControlPanelComponent} from "./controlPanel/ControlPanel";
+import {HeaderComponent} from "./header/Header";
+import {connect} from "../../../../../utils/framework/applicationStateManager/utils/connect";
 
 type MainState = {
     Header: typeof HeaderComponent,
@@ -24,4 +25,10 @@ class Main extends Block<MainState> {
     }
 }
 
-export const MainComponent = new Main(mainProps);
+const mapStateToProps = state => {
+    return {
+        currentChatId: state.currentChatId,
+        showChat: state.currentChatId
+    }
+}
+export const MainComponent = connect(new Main(mainProps), mapStateToProps);

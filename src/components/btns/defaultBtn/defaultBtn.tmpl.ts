@@ -3,7 +3,7 @@ import '../btns.scss';
 
 export const defaultBtnTemplate = new Template(
   `
-    <button on-click={{handleClick}} class="btn">
+    <button type={{!type!}} class="btn">
        <span class="btn_text">
          {{!text!}}
         </span>

@@ -3,7 +3,8 @@ import { mainBtnTemplate } from "./mainBtn.tmpl";
 export type MainBtnState = {
   type:string,
   text:string,
-  handleClick?:EventListener
+  handleClick?:EventListener,
+  disabled?:boolean
 }
 export class MainBtn extends Block<MainBtnState> {
   constructor(props:Props<MainBtnState>) {

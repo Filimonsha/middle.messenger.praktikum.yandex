@@ -1,73 +1,83 @@
 import {Block, Props} from "../../../../../utils/framework/block";
-import { sidebarTemplate } from "./sidebar.tmpl";
-import { ChatItem } from "../components/chatItem";
-import {ChatItemState} from "../components/chatItem/ChatItem";
+import {sidebarTemplate} from "./sidebar.tmpl";
+import {ChatItem} from "../components/chatItem";
+import {connect} from "../../../../../utils/framework/applicationStateManager/utils/connect";
+import {messengerStore} from "../../../../../store/messengerStore";
+import {MainBtn} from "../../../../../components/btns/mainBtn";
+import chatsApi from "../../../../../utils/api/chatsApi";
 
-const chats:Array<ChatItemState> = [
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg: " some long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg: " some long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg:
-      " some long text or not long a dnot know u " +
-      "know what i mean some long text or not long a dnot know u " +
-      "know what i meansome long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg: " some long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg: " some long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-  {
-    imgSrc: "",
-    userName: "Oleg",
-    lastMsg: " some long text or not long a dnot know u know what i mean",
-    lastMsgTime: `${new Date(12414).getHours()}:20`,
-    countOfNotification: 2,
-  },
-];
 
-const sidebarState = {
-  state: {
-    chatItems: chats.map(
-      (chatData) =>
-        new ChatItem({
-          state: chatData,
-        })
-    ),
-  },
-};
-type SidebarState = {
-  chatItems:ChatItem[]
-}
 export class Sidebar extends Block<SidebarState> {
-  constructor(props:Props<SidebarState>) {
-    super(sidebarTemplate, props);
-  }
+    constructor(props: Props<SidebarState>) {
+        super(sidebarTemplate, props);
+
+    }
 }
-const SidebarComponent = new Sidebar(sidebarState);
+
+const CreateChatBtn = new MainBtn({
+    state: {
+        text: "Create chat",
+        type: "button",
+    },
+    events: {
+        click() {
+            messengerStore.reducers.setUserWannaCreateNewChat(true)
+        }
+    }
+})
+
+type SidebarState = {
+    chatItems: ChatItem[],
+    CreateChatBtn: MainBtn,
+    closeModalHandler: Function
+    ActionBtn: MainBtn
+}
+const ActionBtn = new MainBtn({
+    state: {
+        text: "Create new chat",
+        type: "button"
+    },
+    events: {
+        click() {
+            const createChatInputValue = document.getElementById("CREATE_CHAT_INPUT")?.value
+            messengerStore.reducers.createChat(createChatInputValue)
+        }
+    }
+})
+
+
+
+const sidebarState: Props<SidebarState> = {
+    state: {
+        chatItems:[1] ,
+        CreateChatBtn,
+        ActionBtn,
+        closeModalHandler: () => {
+            messengerStore.reducers.setUserWannaCreateNewChat(false)
+        }
+    },
+};
+
+
+const mapStateToProps = state => {
+    return {
+        userWannaCreateNewChat: state.userWannaCreateNewChat
+    }
+}
+const sidebar = new Sidebar(sidebarState)
+
+chatsApi.getChats().then(res =>{
+    if (res.status === 200) {
+        const chats = JSON.parse(res.response).map(chatInfo =>new ChatItem({
+            state:chatInfo,
+            events:{
+                click(){
+                    messengerStore.reducers.setCurrentChatId(chatInfo.id)
+                }
+            }
+        }))
+        sidebar.updateState("chatItems",chats)
+    }
+})
+const SidebarComponent = connect(sidebar, mapStateToProps);
 export default SidebarComponent;

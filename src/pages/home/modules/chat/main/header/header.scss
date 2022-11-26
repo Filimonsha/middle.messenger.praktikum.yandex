@@ -1,13 +1,21 @@
-.header{
+.header {
   display: flex;
   justify-content: space-between;
-  &_user{
+  width: 100%;
+  &_user {
     display: flex;
     align-items: center;
   }
-  &_avatar{
+
+  &_control-chat-users {
+    display: none;
+
+  }
+
+  &_avatar {
     margin-right: 30px;
   }
+
   background: #989898;
-  padding: 20px;
+
 }

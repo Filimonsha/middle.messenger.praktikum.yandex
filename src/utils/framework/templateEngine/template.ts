@@ -91,6 +91,7 @@ export class Template {
                             propertyElement.trim().startsWith("<div id=component-")
                         );
                     });
+
                 const propertyIfFunc = typeof property === "function"
                 if (!propertyIfFunc) {
                     this.modifyTemplate = this.modifyTemplate.replace(
@@ -118,13 +119,11 @@ export class Template {
         const ifFalseThen = eval(foundedConditionArgs ? foundedConditionArgs[3] : "");
 
         if (condition && ifSuccessThen) {
-            console.log("true", condition, foundedConditionArgs)
             this.modifyTemplate = this.modifyTemplate.replace(
                 foundedMatch,
                 ifSuccessThen
             );
         } else if (ifFalseThen) {
-            console.log("false", foundedMatch)
             this.modifyTemplate = this.modifyTemplate.replace(foundedMatch, ifFalseThen);
         } else {
             this.modifyTemplate = this.modifyTemplate.replace(foundedMatch, "");

@@ -1,21 +1,54 @@
-.user-profile{
+.user-profile {
   display: flex;
   flex-direction: column;
   //justify-content: space-between;
   align-items: center;
   height: 100vh;
-  &_logo{
-    margin-bottom: 15px;
+
+  &_changeInfo,&_changePassword{
+    display: none;
+    width: 500px;
   }
-  &_name{
+  &_form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  &_logo {
+    img {
+      width: 130px;
+      height: 130px;
+      border-radius: 1000px;
+    }
+
+    margin-bottom: 90px;
+  }
+
+  &_description {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+  }
+  &_line{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EAEAEA;
     margin-bottom: 10px;
   }
-  &_change-info{
+  &_name {
+    margin-bottom: 10px;
+  }
+
+  &_change-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  .base-info:not(:last-child){
+
+  .base-info:not(:last-child) {
     margin-bottom: 15px;
   }
+
 }

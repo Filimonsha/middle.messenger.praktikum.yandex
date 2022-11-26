@@ -4,6 +4,11 @@ import {Validator} from "../../utils/helpers/validator/validator";
 import {Input} from "../../components/input";
 import {MainBtn} from "../../components/btns/mainBtn";
 import {DefaultBtn} from "../../components/btns/defaultBtn";
+import {connect} from "../../utils/framework/applicationStateManager/utils/connect";
+import {loginStore} from "../../store/loginStore";
+import stateManager from "../../utils/framework/applicationStateManager";
+import {LoginData} from "../../utils/api/types/auth";
+import router from "../../index";
 
 type LoginLayoutState = {
     logins: Array<Input>,
@@ -24,23 +29,30 @@ const mainBtnData = {
         text: "Enter",
     },
 
+
 };
 const defaultBtnData = {
     state: {
         type: "button",
+        handleClick(event){
+        },
         text: "Not register yet ?",
     },
+    events: {
+        click: (e) =>{
+            router.go("/sign-up")
+        }
+    }
 
 };
 
 export function loginAndPasswordValidationHandle(target: HTMLInputElement, stateName: string) {
     const errors = validator.validate(stateName, target.value)
-    console.log("Wow",target.value,stateName)
     if (errors) {
-        this.updateState("value",target.value)
+        this.updateState("value", target.value)
         this.updateState("errors", errors)
-    }else{
-        this.updateState("value",target.value)
+    } else {
+        this.updateState("value", target.value)
         this.updateState("errors", "")
     }
 }
@@ -54,9 +66,9 @@ const loginData = {
                     validatorName: "login",
                     type: "text",
                     placeholder: "Логин",
-                    value:"",
+                    value: "",
                     errors: "",
-                    name:"login",
+                    name: "login",
                     handleBlur({target}) {
                         loginAndPasswordValidationHandle.call(this, target, "login")
                     },
@@ -69,10 +81,10 @@ const loginData = {
                 state: {
                     labelName: "password",
                     validatorName: "password",
-                    value:"",
-                    type:"password",
+                    value: "",
+                    type: "password",
                     placeholder: "another text",
-                    name:"password",
+                    name: "password",
                     handleBlur({target}) {
                         loginAndPasswordValidationHandle.call(this, target, "password")
                     },
@@ -87,25 +99,38 @@ const loginData = {
         DefaultButton: new DefaultBtn(defaultBtnData),
     },
     events: {
-        submit(e:SubmitEvent) {
+        submit(e: SubmitEvent) {
             e.preventDefault();
+            let dataIsValid = true;
+            const data: LoginData = {
+                login: "",
+                password: "",
+            }
             this.getComponentChildren().logins.forEach((login: Input) => {
                 const currentLoginInputState = login.getState();
                 if (validator.validate(
                     currentLoginInputState.labelName,
                     login.getCompiledElement()?.querySelector("input")?.value || ""
                 )) {
-                    console.error(
-                        validator.validate(
-                            currentLoginInputState.labelName,
-                            login.getCompiledElement()?.querySelector("input")?.value || ""
-                        )
-                    );
-                } else {
-                    console.log(login.getCompiledElement()?.querySelector("input")?.value)
+
+                    dataIsValid = false
+                }else{
+                    data[currentLoginInputState.name as keyof typeof data] = currentLoginInputState.value
                 }
             });
+            if (dataIsValid) {
+                loginStore.reducers.login(data)
+            }
         },
     },
 };
-export const LoginLayoutComponent = new LoginLayout(loginData);
+
+const mapStateToProps = () => {
+    return {
+        // name:storeState.name,
+        name: stateManager.generalStoreState.name,
+    }
+}
+
+
+export const LoginLayoutComponent = connect(new LoginLayout(loginData), mapStateToProps);

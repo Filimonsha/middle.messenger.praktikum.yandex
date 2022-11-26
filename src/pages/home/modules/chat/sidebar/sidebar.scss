@@ -1,10 +1,14 @@
-.sidebar{
+.sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 30%;
-  &_chats{
+  width: 300px;
+
+  &_chats {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-right: 1px solid black;
 
   }
 }

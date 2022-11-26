@@ -7,7 +7,7 @@ interface IEventBus {
 type Listeners = { [event: string]: Array<Function> }
 
 export class EventBus implements IEventBus {
-    private listeners: Listeners = {};
+    protected listeners: Listeners = {};
 
     subscribeCallbackOnEvent(eventName: string, callback: Function): void {
         if (!this.listeners[eventName]) {
@@ -29,7 +29,7 @@ export class EventBus implements IEventBus {
 
     notify(eventName: string, ...args: any[]) {
         if (!this.listeners[eventName]) {
-            throw new Event(`Нет события: ${eventName}`);
+            throw new Event(`This event does not exist: ${eventName}`);
         }
 
         this.listeners[eventName].forEach((listener) => {

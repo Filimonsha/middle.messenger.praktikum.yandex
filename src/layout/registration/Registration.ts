@@ -5,6 +5,8 @@ import { Validator } from "../../utils/helpers/validator/validator";
 import {MainBtn, MainBtnState} from "../../components/btns/mainBtn";
 import {DefaultBtn, DefaultBtnState} from "../../components/btns/defaultBtn";
 import { loginAndPasswordValidationHandle } from "../login/Login";
+import {RegistrationData} from "../../utils/api/types/auth";
+import {registrationStore} from "../../store/registrationStore";
 const validator = new Validator();
 
 const registrationInputs:Array<Props<InputState>> = [
@@ -170,25 +172,34 @@ const registrationProps:Props<RegistrationLayoutState> = {
   events: {
     submit(e:SubmitEvent) {
       e.preventDefault();
-      this.getComponentChildren().logins.forEach((login: Input) => {
-        const currentLoginInputState = login.getState();
+      let dataIsValid = true;
+      const data:RegistrationData = {
+        login:"",
+        password:"",
+        email:"",
+        phone:"",
+        first_name:"",
+        second_name:"",
+      }
+      this.getComponentChildren().inputs.forEach((input: Input) => {
+        const currentLoginInputState = input.getState();
+
         if (validator.validate(
-            currentLoginInputState.labelName,
-            login.getCompiledElement()?.querySelector("input")?.value || ""
+            currentLoginInputState.validatorName,
+            input.getCompiledElement()?.querySelector("input")?.value || ""
         )) {
-          console.error(
-              validator.validate(
-                  currentLoginInputState.labelName,
-                  login.getCompiledElement()?.querySelector("input")?.value || ""
-              )
-          );
+          dataIsValid = false
         } else {
-          console.log(login.getCompiledElement()?.querySelector("input")?.value)
+          data[currentLoginInputState.name as keyof typeof data] = currentLoginInputState.value
         }
       });
+      if (dataIsValid) {
+        registrationStore.reducers.registrate(data)
+      }
     },
   },
 };
+
 export const RegistrationLayoutComponent = new RegistrationLayout(
   registrationProps
 );

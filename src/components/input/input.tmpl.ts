@@ -9,8 +9,6 @@ export const inputTemplate = new Template(`
           <div class="input__with-label_warning d-block ">
                 {{ !errors! }}
           </div>
-          <input name="{{!name!}}" value="{{!value!}}"on-focus={{handleFocus}} on-blur={{handleBlur}} type="{{!type !}}" placeholder={{!placeholder!}}  class="input__with-label_input" type="text" name="login" id="LOGIN">
+          <input name="{{!name!}}" value="{{!value!}}" on-focus={{handleFocus}} on-blur={{handleBlur}} type="{{!type !}}" placeholder={{!placeholder!}}  class="input__with-label_input" type="text" name="login" id="LOGIN">
     </label>
-
- 
 `);

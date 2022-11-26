@@ -10,12 +10,22 @@ export const headerTemplate = new Template(`
             </div>
             <div class="header_name">
                 <span>
-                    {{ !userName! }}
+                    {{ !title! }}
                 </span>
             </div>
         </div>
         <button class="btn header_optionsBtn">
+            {{!AddUserBtn!}}
+            {{!DeleteUserBtn!}}
             ${OptionIcon()}
         </button>
+        <div class="header_control-chat-users modal {{ if (!userWantConfigureChat!) then {d-block}  }} ">
+          <div class="modal-content ">
+            <span class="close" on-click={{closeModalHandler}}>&times;</span>
+            <input id="USER_LOGIN_INPUT" type="text">
+            <span>{{!statusText!}}</span>
+            {{!ActionBtn!}}
+          </div>
+        </div>
     </div>
 `);

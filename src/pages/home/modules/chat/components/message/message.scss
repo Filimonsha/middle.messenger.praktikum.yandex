@@ -7,8 +7,6 @@
   border-color: #C8C8C8;
   border-radius: 3px;
   max-width: 500px;
-  overflow: hidden;
-
   &_check{
     display: none;
   }
@@ -27,7 +25,7 @@
   flex-direction: column-reverse;
   background: #F7F9FF;
   .message_check{
-    display: block;
+    display: none;
   }
   .message_time{
     margin-bottom: 0;

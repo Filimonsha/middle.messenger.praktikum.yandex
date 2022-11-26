@@ -29,7 +29,7 @@ export class Router {
         foundRoute.renderRoute()
 
     }
-
+        //TODO
         public use(pathName: string, component: Block<any>) {
         const newRoute = new Route(pathName, component, {
             mountingPlace: ".root"

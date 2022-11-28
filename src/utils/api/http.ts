@@ -31,8 +31,8 @@ export class HTTPTransport {
         this.baseUrl = baseUrl + endpointEntity
     }
 
-    get: HTTPMethod =  (url, options = {}) => {
-        return  this.request(this.baseUrl + url, {...options, method: METHODS.GET});
+    get: HTTPMethod = (url, options = {}) => {
+        return this.request(this.baseUrl + url, {...options, method: METHODS.GET});
     }
 
     put: HTTPMethod = (url, data, option = {}) => this.request(this.baseUrl + url, {
@@ -61,7 +61,6 @@ export class HTTPTransport {
             xhr.open(options.method, url)
         }
 
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         if (options.headers) {
             Object.entries<string>(options.headers).forEach((cartage) => {
                 const name = cartage[0];
@@ -82,9 +81,15 @@ export class HTTPTransport {
         xhr.ontimeout = handleError;
 
         if (options.method === METHODS.GET || !options.data) {
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.send();
         } else {
-            xhr.send(JSON.stringify(options.data));
+            if (options.data instanceof FormData) {
+                xhr.send(options.data);
+            } else {
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.send(JSON.stringify(options.data));
+            }
         }
     });
 }

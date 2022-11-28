@@ -3,6 +3,7 @@ import {chatLayoutTemplate} from "./chatLayout.tmpl";
 import SidebarComponent from "../../pages/home/modules/chat/sidebar/Sidebar";
 import {MainComponent} from "../../pages/home/modules/chat/main";
 import {connect} from "../../utils/framework/applicationStateManager/utils/connect";
+import {userProfileStore} from "../../store/userProfileStore";
 
 
 const chatLayoutProps = {

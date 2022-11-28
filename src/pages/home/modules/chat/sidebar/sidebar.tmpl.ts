@@ -3,11 +3,12 @@ import './sidebar.scss';
 
 export const sidebarTemplate = new Template(`
 <div class="sidebar">
-        <div class="sidebar_chats">
+    <div class="sidebar_wrapper">
+           <div class="sidebar_chats">
             {{!chatItems!}}
         </div>
-    <input type="text" class="sidebar_search">
-    {{!CreateChatBtn!}}
+        {{!CreateChatBtn!}} 
+    </div>
      <div class="header_control-chat-users modal {{ if (!userWannaCreateNewChat!) then {d-block}  }} ">
           <div class="modal-content ">
             <span class="close" on-click={{closeModalHandler}}>&times;</span>

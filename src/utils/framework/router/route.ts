@@ -1,6 +1,9 @@
 import {Block} from "../block";
+import {UseRouteOptions} from "./router";
+
 type CreateOptionsType = {
-    mountingPlace: string
+    mountingPlace: string,
+    useRouteOptions: UseRouteOptions
 }
 
 
@@ -16,7 +19,13 @@ export default class Route {
     }
 
     public renderRoute() {
-        this.component.renderDom(this.createOptions.mountingPlace)
+        if (this.createOptions.useRouteOptions?.renderCondition) {
+            if (this.createOptions.useRouteOptions?.renderCondition()) {
+                this.component.renderDom(this.createOptions.mountingPlace)
+            }
+        }else {
+            this.component.renderDom(this.createOptions.mountingPlace)
+        }
     }
 
     public matchRoute(routePathName: string) {

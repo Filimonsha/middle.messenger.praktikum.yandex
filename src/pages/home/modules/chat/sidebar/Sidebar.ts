@@ -5,6 +5,9 @@ import {connect} from "../../../../../utils/framework/applicationStateManager/ut
 import {messengerStore} from "../../../../../store/messengerStore";
 import {MainBtn} from "../../../../../components/btns/mainBtn";
 import chatsApi from "../../../../../utils/api/chatsApi";
+import {Chat} from "../../../../../utils/api/types/chat";
+import {formattedDateInSeconds} from "../../../../../utils/helpers/formateDate";
+import {baseUrl, resources} from "../../../../../utils/api/const/routes";
 
 
 export class Sidebar extends Block<SidebarState> {
@@ -46,10 +49,9 @@ const ActionBtn = new MainBtn({
 })
 
 
-
 const sidebarState: Props<SidebarState> = {
     state: {
-        chatItems:[1] ,
+        chatItems: [1],
         CreateChatBtn,
         ActionBtn,
         closeModalHandler: () => {
@@ -66,18 +68,35 @@ const mapStateToProps = state => {
 }
 const sidebar = new Sidebar(sidebarState)
 
-chatsApi.getChats().then(res =>{
+chatsApi.getChats().then((res: any) => {
     if (res.status === 200) {
-        const chats = JSON.parse(res.response).map(chatInfo =>new ChatItem({
-            state:chatInfo,
-            events:{
-                click(){
-                    messengerStore.reducers.setCurrentChatId(chatInfo.id)
+        try{
+            const chats: Array<ChatItem> = JSON.parse(res.response).map((chatInfo: Chat) => new ChatItem({
+                state: {
+                    ...chatInfo,
+                    avatar:baseUrl + resources  +  chatInfo.avatar || require("../../../../../../static/img/default-image.jpeg"),
+                    last_message: {
+                        ...chatInfo.last_message,
+                        time: formattedDateInSeconds(chatInfo.last_message?.time),
+                        content: chatInfo.last_message?.content.length > 200 ?
+                            chatInfo.last_message?.content.slice(0, 200) + "..." :
+                            chatInfo.last_message?.content
+                    }
+                },
+                events: {
+                    click() {
+                        messengerStore.reducers.setCurrentChatId(chatInfo.id)
+                    }
                 }
-            }
-        }))
-        sidebar.updateState("chatItems",chats)
+            }))
+            sidebar.updateState("chatItems", chats)
+        }catch (e) {
+
+        }
+
     }
 })
+    .catch(error => console.log(error))
+
 const SidebarComponent = connect(sidebar, mapStateToProps);
 export default SidebarComponent;

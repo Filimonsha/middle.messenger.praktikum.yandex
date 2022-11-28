@@ -4,6 +4,7 @@ import {UserInfo} from "../utils/api/types/auth";
 import {ChangeUserInfo, ChangeUserPassword} from "../utils/api/types/user";
 import userApi from "../utils/api/userApi";
 import router from "../index";
+import {baseUrl, resources} from "../utils/api/const/routes";
 
 type UserProfileInit = {
     userInfo: UserInfo | null,
@@ -26,18 +27,20 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
         getUserInfo: (state) => {
             authApi.getUserInfo().then((res: any) => {
                 if (res.status === 200) {
-                    if (!(JSON.parse(res.response).avatar)) {
+                    try {
                         state.userInfo = {
                             ...JSON.parse(res.response),
-                            avatar: require("../../static/img/default-image.jpeg")
+                            avatar: JSON.parse(res.response).avatar ? baseUrl + resources + JSON.parse(res.response).avatar : require("../../static/img/default-image.jpeg")
                         }
-                    } else {
-                        state.userInfo = JSON.parse(res.response)
+                        localStorage.setItem("currentUserId", state.userInfo?.id.toString() || "")
+                    } catch (e) {
 
                     }
-
                 }
             })
+                .catch(error => {
+
+                })
         },
         setUserWantChangeInfo: (state, data: boolean) => {
             state.userWantChangeInfo = data
@@ -46,15 +49,23 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
             state.userWantChangePassword = data
         },
         exit: () => {
-            authApi.logout()
-            router.go("/")
+            authApi.logout().then(() => {
+                localStorage.removeItem("currentUserId")
+                router.go("/")
+
+            })
+                .catch(error => console.log(error))
         },
         changeUserInfo: (state, data: ChangeUserInfo) => {
             userApi.changeUserInfo(data).then((res: any) => {
                 if (res.status === 200) {
-                    state.userInfo = JSON.parse(res.response)
-                    state.userWantChangeInfo = false
-                    console.log(state)
+                    try {
+                        state.userInfo = JSON.parse(res.response)
+                        state.userWantChangeInfo = false
+                    } catch (e) {
+
+                    }
+
                 }
             })
         },
@@ -72,15 +83,33 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                     state.changePasswordStatus = res.response.reason
                 }
             })
+                .catch(error => console.log(error))
+
         },
         updateAvatar: (state, data: FormData) => {
             userApi.changeUserAvatar(data).then((res: any) => {
                 if (res.status === 200) {
-                    state.userInfo = JSON.parse(res).response
+                    try {
+                        state.userInfo = JSON.parse(res.response)
+                        state.userInfo = {
+                            ...JSON.parse(res.response),
+                            avatar: baseUrl + resources + JSON.parse(res.response).avatar
+                        }
+                        console.log("Hash",state.userInfo)
+                    } catch (e) {
+
+                    }
                 } else {
-                    state.avatarStatus = JSON.parse(res).response
+                    try {
+                        state.avatarStatus = JSON.parse(res).response
+
+                    } catch (e) {
+
+                    }
                 }
             })
+                .catch(error => console.log(error))
+
         }
     }
 })

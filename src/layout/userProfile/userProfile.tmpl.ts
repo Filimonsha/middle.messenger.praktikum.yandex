@@ -26,7 +26,7 @@ const userData = {
 export const userProfileLayoutTemplate = new Template(`
       <div class="user-profile">
         <div class="user-profile_logo">
-           <img src={{!userInfo.avatar!}} alt="">
+           <img src={{!userInfo.avatar!}} alt="user avatar">
         </div>
         <div>
              <span>Обновить изображенеие</span>

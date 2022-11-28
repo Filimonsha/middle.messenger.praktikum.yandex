@@ -6,11 +6,11 @@ export const headerTemplate = new Template(`
         <div class="header">
         <div class="header_user">
             <div class="header_avatar">
-                <img src="" alt="">
+                <img src={{!userInfo.avatar!}} alt="user avatar">
             </div>
-            <div class="header_name">
+            <div class="header_name" on-click={{moveToProfileHandler}}>
                 <span>
-                    {{ !title! }}
+                    {{ !userInfo.first_name! }}
                 </span>
             </div>
         </div>

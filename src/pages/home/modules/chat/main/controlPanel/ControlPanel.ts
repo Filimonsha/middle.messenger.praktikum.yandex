@@ -15,4 +15,9 @@ export const ControlPanelComponent = new ControlPanel({
         },
         mem:""
     },
+    events:{
+        submit(e:SubmitEvent){
+            e.preventDefault()
+        }
+    }
 });

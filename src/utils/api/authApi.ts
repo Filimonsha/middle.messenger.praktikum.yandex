@@ -1,7 +1,8 @@
 import {HTTPTransport} from "./http";
 import {LoginData, RegistrationData, UserInfo} from "./types/auth";
+import {baseUrl} from "./const/routes";
 
-const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2", "/auth")
+const authApiInstance = new HTTPTransport(baseUrl, "/auth")
 
 class AuthApi {
     signup(data: RegistrationData) {

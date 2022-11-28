@@ -14,6 +14,7 @@ type HeaderComponentState = {
     AddUserBtn: MainBtn,
     DeleteUserBtn: MainBtn,
     ActionBtn: MainBtn,
+    DeleteChatBtn:MainBtn,
     moveToProfileHandler: Function
 }
 
@@ -82,6 +83,7 @@ const headerComponentProps: Props<HeaderComponentState> = {
         AddUserBtn,
         ActionBtn,
         DeleteUserBtn,
+        DeleteChatBtn,
         moveToProfileHandler: () =>{
             router.go("/settings")
         },

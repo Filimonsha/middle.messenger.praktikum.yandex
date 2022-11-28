@@ -5,7 +5,6 @@ import {MessagesComponent} from "../pages/home/modules/chat/main/messages";
 import {Message} from "../pages/home/modules/chat/components/message";
 import {ChatItem} from "../pages/home/modules/chat/components/chatItem";
 import sidebar from "../pages/home/modules/chat/sidebar/Sidebar";
-import {router} from "../index";
 import {formattedDateInSeconds} from "../utils/helpers/formateDate";
 import {baseUrl, resources} from "../utils/api/const/routes";
 

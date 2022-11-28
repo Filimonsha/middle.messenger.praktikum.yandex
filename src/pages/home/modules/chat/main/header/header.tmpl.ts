@@ -17,6 +17,7 @@ export const headerTemplate = new Template(`
         <button class="btn header_optionsBtn">
             {{!AddUserBtn!}}
             {{!DeleteUserBtn!}}
+            {{!DeleteChatBtn!}}
             ${OptionIcon()}
         </button>
         <div class="header_control-chat-users modal {{ if (!userWantConfigureChat!) then {d-block}  }} ">

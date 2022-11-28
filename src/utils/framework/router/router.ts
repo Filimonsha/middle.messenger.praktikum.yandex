@@ -1,6 +1,10 @@
 import Route from "./route";
 import {Block} from "../block";
 
+export type UseRouteOptions = {
+    renderCondition?: () => boolean,
+}
+
 export class Router {
     private static instance: Router;
     private routes: Array<Route> = [];
@@ -20,7 +24,7 @@ export class Router {
             throw new Error("Router does not have this route !")
         }
 
-        if (this.currentRoute){
+        if (this.currentRoute) {
             this.currentRoute.disableRouteDisplay()
         }
 
@@ -29,10 +33,12 @@ export class Router {
         foundRoute.renderRoute()
 
     }
-        //TODO
-        public use(pathName: string, component: Block<any>) {
+
+    //TODO
+    public use(pathName: string, component: Block<any>, options?: UseRouteOptions) {
         const newRoute = new Route(pathName, component, {
-            mountingPlace: ".root"
+            mountingPlace: ".root",
+            useRouteOptions: options || {}
         })
         this.routes.push(newRoute)
         return this
@@ -41,7 +47,6 @@ export class Router {
     public go(pathName: string) {
         this.history.pushState({}, "", pathName)
         this.handleRouteStatement(pathName)
-
     }
 
     public start() {

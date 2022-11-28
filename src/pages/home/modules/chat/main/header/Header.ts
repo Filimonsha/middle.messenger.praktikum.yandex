@@ -6,17 +6,22 @@ import chatsApi from "../../../../../../utils/api/chatsApi";
 import {chatStore} from "../../../../../../store/chatStore";
 import doc = Mocha.reporters.doc;
 import stateManager from "../../../../../../utils/framework/applicationStateManager";
+import {userProfileStore} from "../../../../../../store/userProfileStore";
+import router from "../../../../../../index";
 
 type HeaderComponentState = {
     closeModalHandler: Function,
     AddUserBtn: MainBtn,
     DeleteUserBtn: MainBtn,
-    ActionBtn: MainBtn
+    ActionBtn: MainBtn,
+    DeleteChatBtn:MainBtn,
+    moveToProfileHandler: Function
 }
 
 class Header extends Block<HeaderComponentState> {
     constructor(props: Props<HeaderComponentState>) {
         super(headerTemplate, props);
+        userProfileStore.reducers.getUserInfo()
     }
 }
 
@@ -61,21 +66,41 @@ const DeleteUserBtn = new MainBtn({
         }
     }
 })
+
+const DeleteChatBtn = new MainBtn({
+    state:{
+        text: "Delete chat",
+        type: "button"
+    },
+    events: {
+        click() {
+            chatStore.reducers.deleteChat()
+        }
+    }
+})
 const headerComponentProps: Props<HeaderComponentState> = {
     state: {
         AddUserBtn,
         ActionBtn,
         DeleteUserBtn,
+        DeleteChatBtn,
+        moveToProfileHandler: () =>{
+            router.go("/settings")
+        },
         closeModalHandler: () => {
             chatStore.reducers.setUserWantAddUsers(false)
-            chatStore.reducers.userWantDeleteUsers(false)
+            chatStore.reducers.setUserWantDeleteUsers(false)
         }
     },
 }
 const mapStateToProps = (state) => {
     return {
         userWantConfigureChat: state.userWantAddUsers || state.userWantDeleteUsers,
-        statusText: state.statusText
+        statusText: state.statusText,
+        userInfo: {
+            ...state.userInfo,
+            avatar: state.userInfo?.avatar || require("../../../../../../../static/img/default-image.jpeg")
+        }
     }
 }
 export const HeaderComponent = connect(new Header(headerComponentProps), mapStateToProps)

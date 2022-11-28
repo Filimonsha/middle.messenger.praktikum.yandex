@@ -1,7 +1,8 @@
 import {HTTPTransport} from "./http";
 import {AddUsersToChat} from "./types/chat";
+import {baseUrl} from "./const/routes";
 
-const chatsApiInstanse = new HTTPTransport("https://ya-praktikum.tech/api/v2", "/chats")
+const chatsApiInstanse = new HTTPTransport(baseUrl, "/chats")
 
 class ChatsApi {
     getChats() {

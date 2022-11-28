@@ -5,7 +5,6 @@ export const chatLayoutTemplate = new Template(`
    <div class="chat">
       {{!Sidebar!}}
       {{!Main!}}
-
    </div>
    
 `);

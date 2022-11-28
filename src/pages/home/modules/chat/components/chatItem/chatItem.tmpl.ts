@@ -5,21 +5,23 @@ export const chatItemTemplate = new Template(
     `
         <div class="chat-item">
             <div class="chat-item_img">
-                      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Favatarko.ru%2Fkartinka%2F32117&psig=AOvVaw0qWlT3XgCtRGL8gijD5Mev&ust=1665438264092000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMDNrZKP1PoCFQAAAAAdAAAAABAE" alt="avatar">
+                      <img src={{!avatar!}} alt="avatar">
             </div>
-            <div class="chat-item_desc">
+            <div class="chat-item_right-part">
+                        <div class="chat-item_desc">
                 <div class="chat-item_msg">
-                    <span class="chat-item_user-name">{{ !title!}}</span>
-                    <span class="chat-item_last-msg">{{ !lastMsg! }}</span>
+                    <span class="chat-item_chat-name">{{ !title!}}</span>
+                    <span class="chat-item_last-msg">{{ !last_message.content! }}</span>
                 </div>
             </div>
             <div class="chat-item_info">
-                <div class="chat-item_time">
-                    {{ !lastMsgTime! }}
+                <div class="chat-item_time  ">
+                    {{ !last_message.time! }}
                 </div>
-                <div class="chat-item_notification">
-                    {{ !countOfNotification! }}
+                <div class="chat-item_notification {{ if (!unread_count!) then {d-block} }} ">
+                    {{ !unread_count! }}
                 </div>
+            </div>
             </div>
         </div>
     `,

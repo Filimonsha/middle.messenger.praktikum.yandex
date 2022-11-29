@@ -123,6 +123,12 @@ export abstract class Block<UserState extends State> {
     private render = () => {
         this.renderCount += 1
         const componentEvents = this.componentProps.events
+        if (this.componentProps.events){
+            for (const key in componentEvents){
+                componentEvents[key] = this.componentProps.events[key].bind(this)
+            }
+        }
+
         if (this.element && componentEvents) {
             Object.keys(componentEvents).forEach((eventName) => {
                 this.element.removeEventListener(
@@ -170,7 +176,7 @@ export abstract class Block<UserState extends State> {
             Object.keys(componentEvents).forEach((eventName) => {
                 this.element.addEventListener(
                     eventName,
-                    componentEvents[eventName].bind(this)
+                    componentEvents[eventName]
                 );
             });
         }

@@ -10,7 +10,7 @@ export const headerTemplate = new Template(`
             </div>
             <div class="header_name" on-click={{moveToProfileHandler}}>
                 <span>
-                    {{ !userInfo.first_name! }}
+                    {{ !userInfo.first_name! }} - go to profile
                 </span>
             </div>
         </div>

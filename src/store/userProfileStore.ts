@@ -30,7 +30,7 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                     try {
                         state.userInfo = {
                             ...JSON.parse(res.response),
-                            avatar: JSON.parse(res.response).avatar ? baseUrl + resources + JSON.parse(res.response).avatar : require("../../static/img/default-image.jpeg")
+                            avatar: JSON.parse(res.response).avatar ? baseUrl + resources + JSON.parse(res.response).avatar : ""
                         }
                         localStorage.setItem("currentUserId", state.userInfo?.id.toString() || "")
                     } catch (e) {
@@ -39,7 +39,7 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                 }
             })
                 .catch(error => {
-
+                    console.log(error)
                 })
         },
         setUserWantChangeInfo: (state, data: boolean) => {

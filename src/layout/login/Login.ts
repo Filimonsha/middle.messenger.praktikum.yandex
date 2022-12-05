@@ -34,12 +34,10 @@ const mainBtnData = {
 const defaultBtnData = {
     state: {
         type: "button",
-        handleClick(event){
-        },
         text: "Not register yet ?",
     },
     events: {
-        click: (e) =>{
+        click: ( ) =>{
             router.go("/sign-up")
         }
     }

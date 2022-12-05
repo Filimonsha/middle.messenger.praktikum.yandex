@@ -3,7 +3,6 @@ import {EventBus} from "../eventBus";
 import {Events} from "./const/events";
 import {Template} from "../templateEngine/template";
 import {AttributeHandler} from "../attributeHandler";
-import doc = Mocha.reporters.doc;
 
 export interface State {
     [stateName: string]: any
@@ -80,11 +79,13 @@ export abstract class Block<UserState extends State> {
                             //TODO componentChildren = {}
                         }
                         value.forEach((childElement: Block<UserState>) => {
-                            this.componentChildren[p].push(childElement);
+                            // @ts-ignore
+                            this.componentChildren?.[p].push(childElement);
                         });
                         this.createDummyChildren();
 
                     }else if (value.includes((element: any) => element instanceof Block)) {
+                        // @ts-ignore
                         this.componentChildren[p] = value.find(element => element instanceof Block)
 
                         this.createDummyChildren();
@@ -148,7 +149,7 @@ export abstract class Block<UserState extends State> {
         //TODO
         if (this.renderCount > 1) {
 
-            // this.element.innerHTML =  document.createElement("div");
+            // @ts-ignore
             this.element.innerHTML = document.createElement("div");
 
             this.element.innerHTML = this.template.compile(this.componentState)
@@ -249,7 +250,8 @@ export abstract class Block<UserState extends State> {
     public updateState = <T>(stateName: string, newValue: T) => {
         const stateIsEqual = this.componentState[stateName] === newValue
         if (!stateIsEqual) {
-            this.componentState[stateName] = newValue;
+            // @ts-ignore
+            this.componentState[stateName as keyof t ] = newValue;
         }
     };
 

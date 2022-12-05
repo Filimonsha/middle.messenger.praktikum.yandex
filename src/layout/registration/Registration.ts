@@ -145,7 +145,7 @@ const defaultBtnData:Props<DefaultBtnState> = {
     text: "Not register yet ?",
   },
   events: {
-    click: (e) => console.log("Пользователь нажал на войти"),
+    click: () => console.log("Пользователь нажал на войти"),
   },
 };
 

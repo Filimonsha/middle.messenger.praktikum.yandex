@@ -1,6 +1,6 @@
 import {Block, Props} from "../../../../../../utils/framework/block";
 import {messagesTemplate} from "./messages.tmpl";
-import {Message, MessageProps} from "../../components/message/Message";
+import {Message} from "../../components/message";
 
 type MessagesProps = {
     messages: Message[]

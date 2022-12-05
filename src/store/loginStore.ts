@@ -24,6 +24,7 @@ export const loginStore = stateManager.registerStore({
             state.name = data
         },
         login: (state, data: LoginData) => {
+            console.log("LoginState",state)
             authApi.signin(data).then((res: any) => {
                 if (res.status === 200) {
 
@@ -33,9 +34,10 @@ export const loginStore = stateManager.registerStore({
                                 const chats: Array<ChatItem> = JSON.parse(chatRes.response).map((chatInfo: Chat) => new ChatItem({
                                     state: {
                                         ...chatInfo,
-                                        avatar:baseUrl + resources + chatInfo.avatar || require("../../static/img/default-image.jpeg"),
+                                        avatar:baseUrl + resources + chatInfo.avatar,
                                         last_message: {
                                             ...chatInfo.last_message,
+                                            // @ts-ignore
                                             time: formattedDateInSeconds(chatInfo.last_message?.time),
                                             content: chatInfo.last_message?.content.length > 200 ?
                                                 chatInfo.last_message?.content.slice(0, 200) + "..." :

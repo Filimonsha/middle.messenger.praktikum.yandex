@@ -15,8 +15,8 @@ export const registrationStore = stateManager.registerStore({
     initialState: {},
     reducers: {
         registrate: (state, data: RegistrationData) => {
-            authApi.signup(data).then(res => {
-                console.log(res)
+            authApi.signup(data).then(() => {
+                console.log("registrate state",state)
 
                 chatsApi.getChats().then((chatRes:any) =>{
                     if (chatRes.status === 200) {
@@ -24,9 +24,10 @@ export const registrationStore = stateManager.registerStore({
                             const chats: Array<ChatItem> = JSON.parse(chatRes.response).map((chatInfo: Chat) => new ChatItem({
                                 state: {
                                     ...chatInfo,
-                                    avatar: baseUrl + resources + chatInfo.avatar || require("../../static/img/default-image.jpeg"),
+                                    avatar: baseUrl + resources + chatInfo.avatar,
                                     last_message: {
                                         ...chatInfo.last_message,
+                                        // @ts-ignore
                                         time: formattedDateInSeconds(chatInfo.last_message?.time),
                                         content: chatInfo.last_message?.content.length > 200 ?
                                             chatInfo.last_message?.content.slice(0, 200) + "..." :

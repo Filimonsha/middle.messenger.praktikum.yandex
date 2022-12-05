@@ -50,6 +50,7 @@ export class Router {
     }
 
     public start() {
+        console.log("pathName",window.location.pathname)
         window.addEventListener("popstate", (event) => {
             const eventTarget = event.target as Window
             if (event.currentTarget) {

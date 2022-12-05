@@ -1,3 +1,3 @@
-import {GeneralStore, Indexed} from "../index";
+import {Indexed} from "../index";
 
 export type MapStateToProps = (storeState: Indexed) => any

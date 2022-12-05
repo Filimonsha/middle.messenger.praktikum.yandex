@@ -42,7 +42,7 @@ const ActionBtn = new MainBtn({
     },
     events: {
         click() {
-            const createChatInputValue = document.getElementById("CREATE_CHAT_INPUT")?.value
+            const createChatInputValue = (document.getElementById("CREATE_CHAT_INPUT") as HTMLInputElement )?.value
             messengerStore.reducers.createChat(createChatInputValue)
         }
     }
@@ -51,7 +51,7 @@ const ActionBtn = new MainBtn({
 
 const sidebarState: Props<SidebarState> = {
     state: {
-        chatItems: [1],
+        chatItems: [],
         CreateChatBtn,
         ActionBtn,
         closeModalHandler: () => {
@@ -61,7 +61,7 @@ const sidebarState: Props<SidebarState> = {
 };
 
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:any) => {
     return {
         userWannaCreateNewChat: state.userWannaCreateNewChat
     }
@@ -74,9 +74,10 @@ chatsApi.getChats().then((res: any) => {
             const chats: Array<ChatItem> = JSON.parse(res.response).map((chatInfo: Chat) => new ChatItem({
                 state: {
                     ...chatInfo,
-                    avatar:baseUrl + resources  +  chatInfo.avatar || require("../../../../../../static/img/default-image.jpeg"),
+                    avatar:baseUrl + resources  +  chatInfo.avatar,
                     last_message: {
                         ...chatInfo.last_message,
+                        // @ts-ignore
                         time: formattedDateInSeconds(chatInfo.last_message?.time),
                         content: chatInfo.last_message?.content.length > 200 ?
                             chatInfo.last_message?.content.slice(0, 200) + "..." :

@@ -331,7 +331,7 @@ const userProfileData = {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state:any) => {
     return {
         userInfo: state.userInfo,
         userWantChangeInfo: state.userWantChangeInfo,

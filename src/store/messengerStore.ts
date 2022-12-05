@@ -1,5 +1,5 @@
 import stateManager from "../utils/framework/applicationStateManager";
-import {Chat, Chats, FullMessage} from "../utils/api/types/chat";
+import {Chat, FullMessage} from "../utils/api/types/chat";
 import chatsApi from "../utils/api/chatsApi";
 import {MessagesComponent} from "../pages/home/modules/chat/main/messages";
 import {Message} from "../pages/home/modules/chat/components/message";
@@ -40,9 +40,10 @@ export const messengerStore = stateManager.registerStore({
                                 const chats: Array<ChatItem> = JSON.parse(chatRes.response).map((chatInfo: Chat) => new ChatItem({
                                     state: {
                                         ...chatInfo,
-                                        avatar: baseUrl + resources + chatInfo.avatar || require("../../static/img/default-image.jpeg"),
+                                        avatar: baseUrl + resources + chatInfo.avatar,
                                         last_message: {
                                             ...chatInfo.last_message,
+                                            // @ts-ignore
                                             time: formattedDateInSeconds(chatInfo.last_message?.time),
                                             content: chatInfo.last_message?.content.length > 200 ?
                                                 chatInfo.last_message?.content.slice(0, 200) + "..." :
@@ -64,7 +65,9 @@ export const messengerStore = stateManager.registerStore({
                     })
                 }
             })
-                .catch(error =>{})
+                .catch(error =>{
+                    console.log(error)
+                })
         },
         setUserWannaCreateNewChat: (state, data: boolean) => {
             state.userWannaCreateNewChat = data
@@ -134,12 +137,6 @@ export const messengerStore = stateManager.registerStore({
                                     }))
                                 }
                             } else {
-                                const message = new Message({
-                                    state: {
-                                        ...messagesData,
-                                        isHomeMessage: messagesData.user_id === stateManager.getState().userInfo.id
-                                    }
-                                })
                                 if (!state.currentChatMessages) {
                                     state.currentChatMessages = [messagesData]
                                     MessagesComponent.updateState<Array<Message>>("messages", [new Message({

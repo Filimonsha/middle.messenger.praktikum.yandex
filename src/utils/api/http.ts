@@ -52,7 +52,7 @@ export class HTTPTransport {
         method: METHODS.DELETE,
         data
     });
-    request = (url: string, options: Options) => new Promise((resolve, reject) => {
+    request = (url: string, options: Options) => new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true
         if (options.method === METHODS.GET && options.data) {
@@ -73,7 +73,7 @@ export class HTTPTransport {
             resolve(xhr);
         };
 
-        const handleError = (err) => {
+        const handleError = () => {
         };
 
         xhr.onabort = handleError;

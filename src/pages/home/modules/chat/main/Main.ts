@@ -25,7 +25,7 @@ class Main extends Block<MainState> {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:any) => {
     return {
         currentChatId: state.currentChatId,
         showChat: state.currentChatId

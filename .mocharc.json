@@ -1,5 +1,12 @@
 {
-  "extension": ["ts"],
-  "spec": "test/**/*.spec.ts",
-  "require": "test/babel-register.js"
+  "exclude": [
+    "node_modules/",
+    "dist/"
+  ],
+
+  "package":"package.json",
+  "require": [
+    "babel-register.js"
+  ],
+  "spec": "src/**/*.test.js"
 }

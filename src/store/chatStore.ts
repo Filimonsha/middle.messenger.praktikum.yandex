@@ -1,5 +1,5 @@
 import stateManager from "../utils/framework/applicationStateManager";
-import {AddUsersToChat, Chat} from "../utils/api/types/chat";
+import {Chat} from "../utils/api/types/chat";
 import chatsApi from "../utils/api/chatsApi";
 import userApi from "../utils/api/userApi";
 import {messengerStore} from "./messengerStore";
@@ -34,7 +34,7 @@ export const chatStore = stateManager.registerStore({
                                 chatsApi.addUsers({
                                     chatId: stateManager.getState()?.currentChatId,
                                     users: JSON.parse(res).response.map((user: UserInfo) => user.id)
-                                }).then((res: any) => {
+                                }).then(() => {
                                     state.statusText = "User successfully added"
                                     const timeout = setTimeout(() => {
                                         state.statusText = ""
@@ -103,9 +103,10 @@ export const chatStore = stateManager.registerStore({
                                 const chats: Array<ChatItem> = JSON.parse(res.response).map((chatInfo: Chat) => new ChatItem({
                                     state: {
                                         ...chatInfo,
-                                        avatar:baseUrl + resources  +  chatInfo.avatar || require("../../../../../../static/img/default-image.jpeg"),
+                                        avatar:baseUrl + resources  +  chatInfo.avatar,
                                         last_message: {
                                             ...chatInfo.last_message,
+                                            // @ts-ignore
                                             time: formattedDateInSeconds(chatInfo.last_message?.time),
                                             content: chatInfo.last_message?.content.length > 200 ?
                                                 chatInfo.last_message?.content.slice(0, 200) + "..." :

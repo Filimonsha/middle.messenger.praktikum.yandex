@@ -1,5 +1,5 @@
 import {HTTPTransport} from "./http";
-import {LoginData, RegistrationData, UserInfo} from "./types/auth";
+import {LoginData, RegistrationData} from "./types/auth";
 import {baseUrl} from "./const/routes";
 
 const authApiInstance = new HTTPTransport(baseUrl, "/auth")

@@ -8,10 +8,10 @@ export type Reducers<StateType> = { [reducerName: string]: Reducer<StateType> }
 export type PrepareReducers = { [reducerName: string]: PrepareReducer<any> }
 export type Store = {
     name: string,
-    state: Indexed,
+    state: any,
     reducers: Reducers<any>
 }
-export type CreatingStoreOptions<StateType extends Indexed> = {
+export type CreatingStoreOptions<StateType> = {
     name: string,
     initialState: StateType,
     reducers: Reducers<StateType>
@@ -59,6 +59,7 @@ class StateManager extends EventBus {
         const preparedReducers: PrepareReducers = {}
         Object.entries(options.reducers).map(([reudcerName, reducer]) => {
             preparedReducers[reudcerName] = (data?: any) => {
+                // @ts-ignore
                 return reducer(this.generalStoreState, data)
             }
         })

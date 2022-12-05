@@ -2,9 +2,7 @@ import {Block, Props} from "../../../../../../utils/framework/block";
 import {headerTemplate} from "./header.tmpl";
 import {connect} from "../../../../../../utils/framework/applicationStateManager/utils/connect";
 import {MainBtn} from "../../../../../../components/btns/mainBtn";
-import chatsApi from "../../../../../../utils/api/chatsApi";
 import {chatStore} from "../../../../../../store/chatStore";
-import doc = Mocha.reporters.doc;
 import stateManager from "../../../../../../utils/framework/applicationStateManager";
 import {userProfileStore} from "../../../../../../store/userProfileStore";
 import router from "../../../../../../index";
@@ -93,13 +91,13 @@ const headerComponentProps: Props<HeaderComponentState> = {
         }
     },
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state:any) => {
     return {
         userWantConfigureChat: state.userWantAddUsers || state.userWantDeleteUsers,
         statusText: state.statusText,
         userInfo: {
             ...state.userInfo,
-            avatar: state.userInfo?.avatar || require("../../../../../../../static/img/default-image.jpeg")
+            avatar: state.userInfo?.avatar
         }
     }
 }

@@ -6,14 +6,13 @@ import {Message} from "../pages/home/modules/chat/components/message";
 import {ChatItem} from "../pages/home/modules/chat/components/chatItem";
 import sidebar from "../pages/home/modules/chat/sidebar/Sidebar";
 import {formattedDateInSeconds} from "../utils/helpers/formateDate";
-import {baseUrl, resources} from "../utils/api/const/routes";
+import {BASE_URL, RESOURCES} from "../utils/api/const/routes";
 
 type MessengerStoreInit = {
     userWannaCreateNewChat: boolean,
     newChatTitle: string,
     currentChatId: number | null,
     messagesSocket: WebSocket | null,
-    // currentChatMessages: Array<Message>
     currentChatMessages: Array<FullMessage>
 }
 
@@ -40,7 +39,7 @@ export const messengerStore = stateManager.registerStore({
                                 const chats: Array<ChatItem> = JSON.parse(chatRes.response).map((chatInfo: Chat) => new ChatItem({
                                     state: {
                                         ...chatInfo,
-                                        avatar: baseUrl + resources + chatInfo.avatar,
+                                        avatar: BASE_URL + RESOURCES + chatInfo.avatar,
                                         last_message: {
                                             ...chatInfo.last_message,
                                             // @ts-ignore
@@ -159,7 +158,6 @@ export const messengerStore = stateManager.registerStore({
                                     }))
                                 }
                             }
-                            // MessagesComponent.updateState<Array<Message>>("messages", state.currentChatMessages)
 
                         });
 

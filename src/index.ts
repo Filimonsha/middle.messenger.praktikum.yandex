@@ -34,5 +34,4 @@ router.use("/messenger", ChatLayoutComponent, {
     })
 
 router.start()
-// router.go("/main")
 export default router

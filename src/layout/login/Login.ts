@@ -125,7 +125,6 @@ const loginData = {
 
 const mapStateToProps = () => {
     return {
-        // name:storeState.name,
         name: stateManager.generalStoreState.name,
     }
 }

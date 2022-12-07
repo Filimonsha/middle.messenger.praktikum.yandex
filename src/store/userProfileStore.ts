@@ -4,7 +4,7 @@ import {UserInfo} from "../utils/api/types/auth";
 import {ChangeUserInfo, ChangeUserPassword} from "../utils/api/types/user";
 import userApi from "../utils/api/userApi";
 import router from "../index";
-import {baseUrl, resources} from "../utils/api/const/routes";
+import {BASE_URL, RESOURCES} from "../utils/api/const/routes";
 
 type UserProfileInit = {
     userInfo: UserInfo | null,
@@ -30,7 +30,7 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                     try {
                         state.userInfo = {
                             ...JSON.parse(res.response),
-                            avatar: JSON.parse(res.response).avatar ? baseUrl + resources + JSON.parse(res.response).avatar : ""
+                            avatar: JSON.parse(res.response).avatar ? BASE_URL + RESOURCES + JSON.parse(res.response).avatar : ""
                         }
                         localStorage.setItem("currentUserId", state.userInfo?.id.toString() || "")
                     } catch (e) {
@@ -93,7 +93,7 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                         state.userInfo = JSON.parse(res.response)
                         state.userInfo = {
                             ...JSON.parse(res.response),
-                            avatar: baseUrl + resources + JSON.parse(res.response).avatar
+                            avatar: BASE_URL + RESOURCES + JSON.parse(res.response).avatar
                         }
                         console.log("Hash",state.userInfo)
                     } catch (e) {

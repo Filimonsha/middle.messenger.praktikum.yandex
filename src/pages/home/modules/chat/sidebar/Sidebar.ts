@@ -7,7 +7,7 @@ import {MainBtn} from "../../../../../components/btns/mainBtn";
 import chatsApi from "../../../../../utils/api/chatsApi";
 import {Chat} from "../../../../../utils/api/types/chat";
 import {formattedDateInSeconds} from "../../../../../utils/helpers/formateDate";
-import {baseUrl, resources} from "../../../../../utils/api/const/routes";
+import {BASE_URL, RESOURCES} from "../../../../../utils/api/const/routes";
 
 
 export class Sidebar extends Block<SidebarState> {
@@ -74,7 +74,7 @@ chatsApi.getChats().then((res: any) => {
             const chats: Array<ChatItem> = JSON.parse(res.response).map((chatInfo: Chat) => new ChatItem({
                 state: {
                     ...chatInfo,
-                    avatar:baseUrl + resources  +  chatInfo.avatar,
+                    avatar:BASE_URL + RESOURCES  +  chatInfo.avatar,
                     last_message: {
                         ...chatInfo.last_message,
                         // @ts-ignore

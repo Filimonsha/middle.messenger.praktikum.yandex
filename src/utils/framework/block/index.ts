@@ -158,7 +158,6 @@ export abstract class Block<UserState extends State> {
             this.element.innerHTML = this.template.compile(this.componentState)
             this.element = this.element.children[0]
         }
-        // this.element = compiledElement.children[0];
 
 
         const functionInState = Object.entries(this.componentState).reduce((prevValue, [stateName, stateValue]) => {

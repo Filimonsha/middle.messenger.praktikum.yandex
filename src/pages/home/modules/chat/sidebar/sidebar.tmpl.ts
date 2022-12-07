@@ -19,11 +19,3 @@ export const sidebarTemplate = new Template(`
           </div>
 </div>
 `);
-
-//
-// // работающий вариант ! с 2й вложенностью вау
-// this.element.innerHTML =  document.createElement("div");
-//
-//
-// this.element.innerHTML = this.template.compile(this.componentState)
-//

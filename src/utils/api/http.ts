@@ -18,7 +18,6 @@ function queryStringify(data: object) {
         str += `${name}=${value}${index !== Object.entries(data).length - 1 ? '&' : ''}`;
     });
     return str;
-    // Можно делать трансформацию GET-параметров в отдельной функции
 }
 
 type Options = { [optionName: string]: any }

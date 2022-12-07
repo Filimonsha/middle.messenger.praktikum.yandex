@@ -1,8 +1,8 @@
 import {HTTPTransport} from "./http";
 import {LoginData, RegistrationData} from "./types/auth";
-import {baseUrl} from "./const/routes";
+import {BASE_URL} from "./const/routes";
 
-const authApiInstance = new HTTPTransport(baseUrl, "/auth")
+const authApiInstance = new HTTPTransport(BASE_URL, "/auth")
 
 class AuthApi {
     signup(data: RegistrationData) {

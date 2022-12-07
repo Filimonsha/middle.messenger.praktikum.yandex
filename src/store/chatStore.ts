@@ -5,7 +5,7 @@ import userApi from "../utils/api/userApi";
 import {messengerStore} from "./messengerStore";
 import {UserInfo} from "../utils/api/types/auth";
 import {ChatItem} from "../pages/home/modules/chat/components/chatItem";
-import {baseUrl, resources} from "../utils/api/const/routes";
+import {BASE_URL, RESOURCES} from "../utils/api/const/routes";
 import {formattedDateInSeconds} from "../utils/helpers/formateDate";
 import sidebar from "../pages/home/modules/chat/sidebar/Sidebar";
 
@@ -103,7 +103,7 @@ export const chatStore = stateManager.registerStore({
                                 const chats: Array<ChatItem> = JSON.parse(res.response).map((chatInfo: Chat) => new ChatItem({
                                     state: {
                                         ...chatInfo,
-                                        avatar:baseUrl + resources  +  chatInfo.avatar,
+                                        avatar:BASE_URL + RESOURCES  +  chatInfo.avatar,
                                         last_message: {
                                             ...chatInfo.last_message,
                                             // @ts-ignore

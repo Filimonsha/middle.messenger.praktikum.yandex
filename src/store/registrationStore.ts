@@ -8,7 +8,7 @@ import sidebar from "../pages/home/modules/chat/sidebar/Sidebar";
 import router from "../index";
 import {Chat} from "../utils/api/types/chat";
 import {formattedDateInSeconds} from "../utils/helpers/formateDate";
-import {baseUrl, resources} from "../utils/api/const/routes";
+import {BASE_URL, RESOURCES} from "../utils/api/const/routes";
 
 export const registrationStore = stateManager.registerStore({
     name: "registrationStore",
@@ -24,7 +24,7 @@ export const registrationStore = stateManager.registerStore({
                             const chats: Array<ChatItem> = JSON.parse(chatRes.response).map((chatInfo: Chat) => new ChatItem({
                                 state: {
                                     ...chatInfo,
-                                    avatar: baseUrl + resources + chatInfo.avatar,
+                                    avatar: BASE_URL + RESOURCES + chatInfo.avatar,
                                     last_message: {
                                         ...chatInfo.last_message,
                                         // @ts-ignore

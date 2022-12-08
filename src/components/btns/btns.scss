@@ -1,0 +1,18 @@
+.btn{
+  border: none;
+  outline: none;
+  background: transparent;
+  &_text{
+    display: inline-block;
+    padding: 8px 0;
+    border-width: 2px 0;
+    border-style: solid;
+    border-color: #767575;
+  }
+
+  &__main{
+    padding: 18px 27px;
+    border: 2px solid #000000;
+    border-radius: 6px;
+  }
+}

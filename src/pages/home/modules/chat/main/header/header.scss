@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  &_user {
+    display: flex;
+    align-items: center;
+  }
+
+  &_control-chat-users {
+    display: none;
+
+  }
+
+  &_avatar {
+    img {
+      width: 34px;
+      height: 34px;
+      border-radius: 1000px;
+
+      background: #EFEFEF;
+    }
+
+    margin-right: 30px;
+  }
+
+  background: #989898;
+
+}

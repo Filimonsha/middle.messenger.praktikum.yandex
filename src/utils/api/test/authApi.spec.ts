@@ -3,7 +3,7 @@ import authApi from "../authApi";
 
 describe('Проверяем корректность аунтификации', () => {
     it('Поверяем,что логин это функция', () => {
-      expect(typeof authApi.signin).to("function")
+      expect(typeof authApi.signin).to.eq("function")
     });
 
 });

@@ -63,7 +63,7 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                         state.userInfo = JSON.parse(res.response)
                         state.userWantChangeInfo = false
                     } catch (e) {
-
+                        console.log(e)
                     }
 
                 }
@@ -97,14 +97,14 @@ export const userProfileStore = stateManager.registerStore<UserProfileInit>({
                         }
                         console.log("Hash",state.userInfo)
                     } catch (e) {
-
+                        console.log(e)
                     }
                 } else {
                     try {
                         state.avatarStatus = JSON.parse(res).response
 
                     } catch (e) {
-
+                        console.log(e)
                     }
                 }
             })

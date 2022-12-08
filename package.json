@@ -3,12 +3,8 @@
     "dev": "webpack-dev-server",
     "build": "webpack",
     "start": "PORT=3000 node server.js ",
+    "prepare": "husky install",
     "test": "ts-mocha"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all run test"
-    }
   },
   "targets": {
     "frontend": {

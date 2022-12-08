@@ -54,6 +54,7 @@ export const loginStore = stateManager.registerStore({
                                 localStorage.setItem("currentUserId", "124")
                                 router.go("/messenger")
                             } catch (error){
+                                console.log(e)
                             }
 
                         }

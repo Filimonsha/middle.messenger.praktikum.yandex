@@ -46,14 +46,14 @@ export const chatStore = stateManager.registerStore({
                                 state.statusText = "No users with this Login"
                             }
                         } catch {
-
+                            console.log(e)
                         }
                     } else {
                         try {
                             state.statusText = JSON.parse(res.response).reason
 
-                        } catch {
-
+                        } catch(e) {
+                            console.log(e)
                         }
                     }
                 })
@@ -121,6 +121,7 @@ export const chatStore = stateManager.registerStore({
                                 }))
                                 sidebar.updateState("chatItems", chats)
                             }catch (e) {
+                                console.log(e)
 
                             }
 

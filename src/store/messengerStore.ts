@@ -58,6 +58,7 @@ export const messengerStore = stateManager.registerStore({
                                 sidebar.updateState("chatItems", chats)
                             }
                             catch (e) {
+                                console.log(e)
 
                             }
                         }

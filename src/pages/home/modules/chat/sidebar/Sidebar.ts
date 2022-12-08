@@ -92,7 +92,7 @@ chatsApi.getChats().then((res: any) => {
             }))
             sidebar.updateState("chatItems", chats)
         }catch (e) {
-
+            console.log(e)
         }
 
     }

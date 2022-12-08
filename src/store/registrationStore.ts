@@ -45,7 +45,7 @@ export const registrationStore = stateManager.registerStore({
 
                             router.go("/messenger")
                         }catch (e) {
-
+                            console.log(e)
                         }
 
                     }

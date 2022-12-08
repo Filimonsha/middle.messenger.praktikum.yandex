@@ -7,7 +7,7 @@
   "extension": [
     "ts"
   ],
-  "spec": "src/**/*.test.ts",
+  "spec": "src/**/*.spec.ts",
   "require": "test/babel-register.js"
 
 }
